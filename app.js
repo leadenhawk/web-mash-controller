@@ -13,6 +13,6 @@ app.use(express.static('public')); //serves the files located in the public fold
 // Socket Setup
 var io = socket(server);
 
-io.on('connection', function(){
+io.on('connection', function(socket){
   console.log("made socket connection",socket.id);
 });
