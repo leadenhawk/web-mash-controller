@@ -13,14 +13,17 @@
     "nodejs",
     "express",
     "websockets",
-    "sockets.io",
+    "socket.io",
     "johnny",
     "five"
   ],
   "author": "nathan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
 }
