@@ -1,6 +1,7 @@
 //make front-end connection
 var socket = io.connect('http://192.168.1.70:4000');
 
+/*
 // Query Dom
 var message = document.getElementById('message'),
     handle = document.getElementById('handle'),
@@ -19,4 +20,14 @@ btn.addEventListener('click', function(){
 // Listen for events
 socket.on('chat', function(data){
   output.innerHTML += '<p><strong>'+data.handle+': </strong>'+data.message+'</p>';
+});
+*/
+
+socket.on('tempChange', function(temp){
+  output.innerHTML = '<p><strong>Temp: '+ temp + '</p>';
+});
+
+var pumpButton = document.getElementById('pumpButton');
+pumpButton.addEventListener('click', function(){
+  socket.emit('pumpButtonPressed');
 });
