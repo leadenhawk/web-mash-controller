@@ -12,7 +12,13 @@ app.use(express.static('public')); //serves the files located in the public fold
 
 // Socket Setup
 var io = socket(server);
-
 io.on('connection', function(socket){
-  console.log("made socket connection",socket.id);
+  console.log("made socket connection. Socket id:",socket.id);
+
+
+  //listen for events from front-end
+  socket.on('chat',function(data){
+    //what to do once event arrives
+    io.sockets.emit('chat',data);//emit to all sockets (plural)
+  });
 });
