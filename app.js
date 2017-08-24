@@ -1,3 +1,5 @@
+var DEBUG = true;
+
 var express = require('express');
 var socket = require('socket.io');
 var five = require('johnny-five');
@@ -15,14 +17,14 @@ var server = app.listen(4000, function(){
 // Express - serve front-end files
 app.use(express.static('public')); //serves the files located in the public folder
 
-// Socket Setup
+// Socket.io Setup & functionality
 var io = socket(server);
 io.on('connection', function(socket){
   console.log("A Browser has connected to the socket; ID:",socket.id);
 
   // listen for pumpButtonPressed event
   socket.on('pumpButtonPressed',function(){
-    console.log('Pump button pressed!');
+    if ( DEBUG ) { console.log('Pump button pressed!') };
     event.emit('PBP');
   });
 });
@@ -36,7 +38,7 @@ io.on('connection', function(socket){
 });
 */
 
-// Setup Johnny-five
+// Johnny-five Setup & functionality
 var board = new five.Board();
 board.on("ready", function() {
   console.log("Arduino is active!");
@@ -57,17 +59,20 @@ board.on("ready", function() {
     io.sockets.emit('tempChange', temp);
   });
 
+  // initialised the pump as off
   var pumpState = false;
+
+  // EventEmitter & J5 code - toggles the pump
   event.on('PBP', function(){
     if (pumpState == true){
       pumpState = false;
       led.off();
-      console.log('turn off pump');
+      if ( DEBUG ) { console.log('turn off pump') };
     }
     else if (pumpState == false){
       pumpState = true;
       led.on();
-      console.log('turn on pump');
+      if ( DEBUG ) { console.log('turn on pump') };
     }
   });
 });
