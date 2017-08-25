@@ -1,5 +1,5 @@
 //make front-end connection
-var socket = io.connect('http://192.168.1.70:4000');
+var socket = io.connect('http://192.168.1.67:4000');
 
 /*
 // Query Dom
