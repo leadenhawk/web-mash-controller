@@ -2,17 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>web mash controller</title>
-    <link href="/styles.css" rel="stylesheet" />
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <title>Mash Control</title>
+    <link href="/styles.css" rel="stylesheet" />
   </head>
   <body>
-    <h1>Nathan's Web based mash controller</h1>
-    <div>
-      <div id="output">
-      </div>
-      <button id="pumpButton">Pump</button>
+
+    <div id="vue-app-title">
+      <h1> {{ name }} </h1>
     </div>
+
+    <div id="vue-app-temperature">
+      <h2> {{ temp }} </h2>
+    </div>
+
+    <div id="output"></div>
+    <button id="pumpButton">Pump</button>
+
     <script src="/index.js"></script>
+    <script src="/vue-app.js"></script>
   </body>
 </html>
