@@ -1,3 +1,40 @@
-body {
-  font-family: Arial;
+body{
+  color: #FFF;
+  background-color: #413351;
+  font-size: 12px;
+}
+
+.grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:  "banner   banner   banner"
+                        "temp     temp     pump"
+                        "temp     temp     pump"
+                        "footer   footer   footer";
+  border: 1px solid black;
+}
+
+#banner{
+  grid-area: banner;
+  background-color: #74B3C1;
+  border: 1px solid black;
+}
+
+#temp{
+  grid-area: temp;
+  background-color: #EE8065;
+  border: 1px solid black;
+}
+
+#pump{
+  grid-area: pump;
+  background-color: #E6CE38;
+  border: 1px solid black;
+}
+
+#footer{
+  grid-area: footer;
+  background-color: #7ACDE0;
+  border: 1px solid black;
 }
