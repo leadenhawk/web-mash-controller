@@ -68,7 +68,7 @@ board.on("ready", function() {
       pumpState = false;
       led.off();
       if ( DEBUG ) { console.log('turn off pump') };
-    }
+  }
     else if (pumpState == false){
       pumpState = true;
       led.on();
