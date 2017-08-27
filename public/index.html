@@ -5,22 +5,37 @@
     <script src="/socket.io/socket.io.js"></script>
     <title>Mash Control</title>
     <link href="/styles.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900" rel="stylesheet">
+
   </head>
   <body>
     <div class="grid">
+
       <div id="banner">
-        <p>Banner</p>
+        <h1>Nathan's Mash and Boil Controller</h1>
       </div>
-      <div id="temp">
-        <p>Temperature</p>
+
+      <div id="chart">
+        <p>chart</p>
+      </div>
+
+      <div id="input">
+        <p>input</p>
+      </div>
+
+      <div id="display">
+        <p>output</p>
         <div id="output"></div>
       </div>
+
       <div id="pump">
-        <p>Pump</p>
-        <button id="pumpButton">Pump</button>
+        <p>pump</p>
+        <button id="pumpButton" onclick="pumpToggle(this)">Pump</button>
       </div>
+
       <div id="footer">
-        <p>Footer</p>
+        <p>footer</p>
       </div>
 
       <script src="/index.js"></script>

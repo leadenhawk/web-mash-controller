@@ -1,3 +1,5 @@
+// Socket Code *******************************************************************
+
 //make front-end connection
 var socket = io.connect('http://192.168.1.100:4000');
 
@@ -27,7 +29,22 @@ socket.on('tempChange', function(temp){
   output.innerHTML = '<p><strong>Temp: '+ temp + '</p>';
 });
 
+// Pump Button Code
+var pumpOn = false;
 var pumpButton = document.getElementById('pumpButton');
 pumpButton.addEventListener('click', function(){
   socket.emit('pumpButtonPressed');
+    /*if (pumpOn == false){
+      pumpOn != pumpOn;
+      console.log(pumpOn);
+      console.log("ON")
+      pumpButton.innerHTML = "<p>Pump ON</p>";
+    }
+    else if (pumpOn == true){
+      pumpOn != pumpOn;
+      console.log(pumpOn);
+      console.log("OFF");
+      pumpButton.innerHTML = "<p>Pump OFF</p>";
+    }*/
+
 });

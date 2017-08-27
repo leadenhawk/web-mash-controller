@@ -1,40 +1,57 @@
 body{
-  color: #FFF;
-  background-color: #413351;
+  color: #F8E077;
+  background-color: #4F404D;
   font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+
 }
 
 .grid{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-areas:  "banner   banner   banner"
-                        "temp     temp     pump"
-                        "temp     temp     pump"
-                        "footer   footer   footer";
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:  "ga-banner    ga-banner   ga-banner"
+                        "ga-chart     ga-chart    ga-chart"
+                        "ga-chart     ga-chart    ga-chart"
+                        "ga-input     ga-output   ga-pump"
+                        "ga-input     ga-output   ga-pump"
+                        "ga-footer    ga-footer   ga-footer";
   border: 1px solid black;
+}
+
+#chart{
+  grid-area: ga-chart;
+  background-color: #A99A8A;
+  padding-left: 10px;
 }
 
 #banner{
-  grid-area: banner;
-  background-color: #74B3C1;
-  border: 1px solid black;
+  grid-area: ga-banner;
+  background-color: #A0675D;
+  text-align: center;
+  padding-left: 10px;
 }
 
-#temp{
-  grid-area: temp;
-  background-color: #EE8065;
-  border: 1px solid black;
+#input{
+  grid-area: ga-input;
+  background-color: #CB7B5F;
+  padding-left: 10px;
+}
+
+#display{
+  grid-area: ga-output;
+  background-color: #F2A25F;
+  padding-left: 10px;
 }
 
 #pump{
-  grid-area: pump;
-  background-color: #E6CE38;
-  border: 1px solid black;
+  grid-area: ga-pump;
+  background-color: #CB7B5F;
+  padding-left: 10px;
 }
 
 #footer{
-  grid-area: footer;
-  background-color: #7ACDE0;
-  border: 1px solid black;
+  grid-area: ga-footer;
+  background-color: #A99A8A;
+  padding-left: 10px;
 }
