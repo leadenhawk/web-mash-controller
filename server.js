@@ -10,8 +10,10 @@ var event = new EventEmitter();
 
 // Setup express app
 var app = express();
+
+// start the server
 var server = app.listen(4000, function(){
-  console.log('listening on port 4000...');
+  console.log('Server started, listening on port 4000...');
 });
 
 // Express - serve front-end files
@@ -22,11 +24,19 @@ var io = socket(server);
 io.on('connection', function(socket){
   console.log("A Browser has connected to the socket; ID:",socket.id);
 
+
   // listen for pumpButtonPressed event
-  socket.on('pumpButtonPressed',function(){
+  socket.on('pumpButtonPressed',function() {
     if ( DEBUG ) { console.log('Pump button pressed!') };
     event.emit('PBP');
   });
+
+  // listen for connectButtonPressed event
+  socket.on('connectButtonPressed',function() {
+    if ( DEBUG ) { console.log('Connection made') };
+    io.sockets.emit('connectionMade');
+  });
+
 });
 
 /*
