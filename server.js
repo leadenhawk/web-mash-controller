@@ -26,9 +26,18 @@ io.on('connection', function(socket){
 
 
   // listen for pumpButtonPressed event
-  socket.on('pumpButtonPressed',function() {
-    if ( DEBUG ) { console.log('Pump button pressed!') };
-    event.emit('PBP');
+  // socket.on('pumpButtonPressed',function() {
+  //   if ( DEBUG ) { console.log('Pump button pressed!') };
+  //   event.emit('PBP');
+  // });
+
+  socket.on('pumpOnButtonPressed',function() {
+    if ( DEBUG ) { console.log('Pump ON button pressed!') };
+    event.emit('turnPumpOn');
+  });
+  socket.on('pumpOffButtonPressed',function() {
+    if ( DEBUG ) { console.log('Pump OFF button pressed!') };
+    event.emit('turnPumpOff');
   });
 
   // listen for connectButtonPressed event
@@ -70,19 +79,28 @@ board.on("ready", function() {
   });
 
   // initialised the pump as off
-  var pumpState = false;
+  //var pumpState = false;
 
   // EventEmitter & J5 code - toggles the pump
-  event.on('PBP', function(){
-    if (pumpState == true){
-      pumpState = false;
-      led.off();
-      if ( DEBUG ) { console.log('turn off pump') };
-  }
-    else if (pumpState == false){
-      pumpState = true;
-      led.on();
-      if ( DEBUG ) { console.log('turn on pump') };
-    }
+  // event.on('PBP', function(){
+  //   if (pumpState == true){
+  //     pumpState = false;
+  //     led.off();
+  //     if ( DEBUG ) { console.log('turn off pump') };
+  // }
+  //   else if (pumpState == false){
+  //     pumpState = true;
+  //     led.on();
+  //     if ( DEBUG ) { console.log('turn on pump') };
+  //   }
+  // });
+  event.on('turnPumpOn', function(){
+    led.on();
+    if ( DEBUG ) { console.log('turn on pump') };
   });
+  event.on('turnPumpOff', function(){
+    led.off();
+    if ( DEBUG ) { console.log('turn off pump') };
+  });
+
 });

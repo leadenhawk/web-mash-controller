@@ -1,4 +1,4 @@
-// Creating socket connection
+/*// Creating socket connection
 
 // clear IP address input field...
 document.getElementById("IP-text").value = "";
@@ -43,15 +43,15 @@ connectButton.addEventListener('click', function clickConnect(){
       return pumpState;
     }
   }
-  // *****************************************************************************
+  // ***************************************************************************
 
 });
+*/
 
-
-// Socket Code *******************************************************************
+// Socket Code *****************************************************************
 
 //make front-end connection
-//var socket = io.connect('http://'+IPaddress+':4000');
+var socket = io.connect('http://192.168.1.67:4000');
 
 /*
 // Query Dom
@@ -75,14 +75,15 @@ socket.on('chat', function(data){
 });
 */
 
-// // Display actual temperature **************************************************
-// socket.on('tempChange', function(temp){
-//   output.innerHTML = '<p><strong>Temp: '+ temp + '</p>';
-// });
-// // *****************************************************************************
-//
-//
-// // Pump Button Code ************************************************************
+// Display actual temperature **************************************************
+socket.on('tempChange', function(temp){
+  //output.innerHTML = '<p><strong>Temp: '+ temp + '</p>';
+  vueApp.temp = temp;
+});
+// *****************************************************************************
+
+
+// Pump Button Code ************************************************************
 // var pumpState = false;
 // var pumpButton = document.getElementById('pumpButton');
 // pumpButton.addEventListener('click', function(){
@@ -102,4 +103,4 @@ socket.on('chat', function(data){
 //     return pumpState;
 //   }
 // }
-// // *****************************************************************************
+// *****************************************************************************
