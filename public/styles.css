@@ -8,16 +8,19 @@ body{
 
 .grid{
   display: grid;
+  /*
+  grid-template-columns: 150px 150px 80px;
+  grid-template-rows: 100px auto;
+  grid-gap: 10px 15px;*/
+
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas:  "ga-random      ga-random       ga-random"
                         "ga-banner      ga-banner       ga-banner"
                         "ga-chart       ga-chart        ga-chart"
                         "ga-chart       ga-chart        ga-chart"
                         "ga-mashinput   ga-mashoutput   ga-pump"
                         "ga-mashinput   ga-mashoutput   ga-pump"
-                        "ga-mashinput   ga-mashinput    ga-mashinput"
-                        "ga-boilinput   ga-boilinput    ga-boilinput"
                         "ga-footer      ga-footer       ga-footer";
   border: 1px solid black;
 }
@@ -40,25 +43,25 @@ body{
   padding-left: 10px;
 }
 
-#mash-input{
+#mashInput{
   grid-area: ga-mashinput;
   background-color: #CB7B5F;
   padding-left: 10px;
 }
 
-#mash-output{
+#mashOutput{
   grid-area: ga-mashoutput;
   background-color: #F2A25F;
   padding-left: 10px;
 }
 
-#boil-input{
+#boilInput{
   grid-area: ga-boilinput;
   background-color: #CB7B5F;
   padding-left: 10px;
 }
 
-#boil-output{
+#boilOutput{
   grid-area: ga-boiloutput;
   background-color: #F2A25F;
   padding-left: 10px;
@@ -75,35 +78,3 @@ body{
   background-color: #A99A8A;
   padding-left: 10px;
 }
-
-/*
-body {
-  margin: 0px;
-  padding: 0px;
-}
-
-.container{
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 100px 100px 100px;
-  grid-template-rows: 100px 100px 100px;
-  grid-template-areas:  "one  two  thr"
-                        "one  two  thr"
-                        "one  two  thr";
-}
-
-.one{
-  grid-area: one;
-  background-color: blue;
-}
-
-.two{
-  grid-area: two;
-  background-color: red;
-}
-
-.three{
-  grid-area: thr;
-  background-color: purple;
-}
-*/

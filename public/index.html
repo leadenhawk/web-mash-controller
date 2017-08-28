@@ -11,19 +11,15 @@
 
   </head>
   <body>
-    <!--
-    <div class="container">
-      <div class="one">1</div>
-      <div class="two">2</div>
-      <div class="three">3</div>
-    </div>
-    -->
+
     <div id="vueApp" >
+
       <div class="grid">
+
         <div id="random">
           <p> {{ message }} </p>
           <button v-on:click="changeMessageMethod">Change message</button>
-          <hr />
+
           <button v-on:click="mash = !mash">Mash / Boil</button>
           <p v-if="mash">Mash mode</p>
           <p v-else>Boil mode</p>
@@ -40,20 +36,20 @@
           <p v-else>Am I visible?</p>
         </div>
 
-        <div id="mash-input" v-if="mash">
+        <div id="mashInput" v-if="mash">
           <p>mash input</p>
         </div>
 
-        <div id="mash-output" v-if="mash">
+        <div id="mashOutput" v-if="mash">
           <p> Temperature: {{ temp }} degC</p>
           <p>mash-output</p>
         </div>
 
-        <div id="boil-input" v-if="!mash">
+        <div id="boilInput" v-if="!mash">
           <p>boil-input</p>
         </div>
 
-        <div id="boil-output" v-if="!mash">
+        <div id="boilOutput" v-if="!mash">
           <p>boil-output</p>
         </div>
 
@@ -70,12 +66,11 @@
           <p>footer</p>
         </div>
 
-
-        <script src="/socket.js"></script>
-        <script src="/vue.js"></script>
-
-
       </div>
+
     </div>
+
+    <script src="/socket.js"></script>
+    <script src="/vue.js"></script>
   </body>
 </html>
