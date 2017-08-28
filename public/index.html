@@ -7,65 +7,72 @@
 
     <title>Mash Control</title>
     <link href="/styles.css" rel="stylesheet" />
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900" rel="stylesheet">
 
   </head>
   <body>
-
-
-      <div id="vueApp">
-        <div class="grid">
+    <!--
+    <div class="container">
+      <div class="one">1</div>
+      <div class="two">2</div>
+      <div class="three">3</div>
+    </div>
+    -->
+    <div id="vueApp" >
+      <div class="grid">
+        <div id="random">
           <p> {{ message }} </p>
           <button v-on:click="changeMessageMethod">Change message</button>
           <hr />
           <button v-on:click="mash = !mash">Mash / Boil</button>
           <p v-if="mash">Mash mode</p>
           <p v-else>Boil mode</p>
-          <div id="banner">
-            <h1>Nathan's Mash and Boil Controller</h1>
-          </div>
+        </div>
 
-          <div id="chart" v-if="mash">
-            <p>chart</p>
-            <button v-on:click="show = !show">Show / Hide</button>
-            <p v-if="show">I'm part time visible</p>
-            <p v-else>Am I visible?</p>
-          </div>
+        <div id="banner">
+          <h1>Nathan's Mash and Boil Controller</h1>
+        </div>
 
-          <div id="mash-input" v-if="mash">
-            <p>mash input</p>
-          </div>
+        <div id="chart" v-if="mash">
+          <p>chart</p>
+          <button v-on:click="show = !show">Show / Hide</button>
+          <p v-if="show">I'm part time visible</p>
+          <p v-else>Am I visible?</p>
+        </div>
 
-          <div id="mash-output" v-if="mash">
-            <p> Temperature: {{ temp }} degC</p>
-            <p>mash-output</p>
-          </div>
+        <div id="mash-input" v-if="mash">
+          <p>mash input</p>
+        </div>
 
-          <div id="boil-input" v-if="!mash">
-            <p>boil-input</p>
-          </div>
+        <div id="mash-output" v-if="mash">
+          <p> Temperature: {{ temp }} degC</p>
+          <p>mash-output</p>
+        </div>
 
-          <div id="boil-output" v-if="!mash">
-            <p>boil-output</p>
-          </div>
+        <div id="boil-input" v-if="!mash">
+          <p>boil-input</p>
+        </div>
 
-          <div id="pump" v-if="mash">
-            <p>pump</p>
-            <button v-on:click="pumpOnClicked">ON</button>
-            <button v-on:click="pumpOffClicked">OFF</button>
-            <p> {{ pumpStatus }}</p>
-            <button v-on:click="counter += 1">Add 1</button>
-            <p>The button above has been clicked {{ counter }} times.</p>
-          </div>
+        <div id="boil-output" v-if="!mash">
+          <p>boil-output</p>
+        </div>
 
-          <div id="footer">
-            <p>footer</p>
-          </div>
+        <div id="pump" v-if="mash">
+          <p>pump</p>
+          <button v-on:click="pumpOnClicked">ON</button>
+          <button v-on:click="pumpOffClicked">OFF</button>
+          <p> {{ pumpStatus }}</p>
+          <button v-on:click="counter += 1">Add 1</button>
+          <p>The button above has been clicked {{ counter }} times.</p>
+        </div>
+
+        <div id="footer">
+          <p>footer</p>
+        </div>
 
 
-          <script src="/index.js"></script>
-          <script src="/vue-app.js"></script>
+        <script src="/socket.js"></script>
+        <script src="/vue.js"></script>
 
 
       </div>
