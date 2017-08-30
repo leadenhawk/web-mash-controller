@@ -5,6 +5,15 @@ var socket = require('socket.io');
 var five = require('johnny-five');
 var EventEmitter = require('events').EventEmitter;
 
+// A function I wrote that does the same as the Arduino millis() function
+function millis() {
+  var d = new Date();
+  var n = d.getTime();
+  return n;
+}
+
+var setTemp = 0;
+
 // Setup JS event emitter
 var event = new EventEmitter();
 
@@ -40,10 +49,10 @@ io.on('connection', function(socket){
     event.emit('turnPumpOff');
   });
 
-  // listen for connectButtonPressed event
-  socket.on('connectButtonPressed',function() {
-    if ( DEBUG ) { console.log('Connection made') };
-    io.sockets.emit('connectionMade');
+  socket.on('inputTempChanged', function(param){
+    if ( DEBUG ) { console.log('Set temp is now ' + param +' deg C')};
+    setTemp = param;
+    // event.emit('newSetTemp',setTemp);
   });
 
 });
@@ -102,5 +111,138 @@ board.on("ready", function() {
     led.off();
     if ( DEBUG ) { console.log('turn off pump') };
   });
+  // Conversion from Brett Beauregard's PID tutorials
+   // On/Off & Initialization tutorials not implemented(!)
+   // Direction tutorial not implemented as not relevant
+
+   // Ready to implement Proportional on Measurement
+   // http://brettbeauregard.com/blog/2017/06/proportional-on-measurement-the-code/
+
+   // variables
+   var lastTime = millis();
+   var Input, Output, Setpoint;
+   var outputSum = 0, lastInput = 0;
+   var kp, ki, kd;
+   var SampleTime;
+   var outMin, outMax;
+
+
+   // Setup
+   SetSampleTime(1000);
+   SetTunings(7500, 75, 0);
+
+   //console.log(kp, kd, ki);
+   var WindowSize = 5000;
+   windowStartTime = millis();
+   SetOutputLimits(0, WindowSize);
+
+
+   // PID code
+   function Compute() {
+     if ( temp != undefined ) {
+       //nathan added this to convert the Brett Beauregard code with existing code
+       var Setpoint = setTemp;
+       Input = temp;
+       //console.log("temp: ", temp);
+       //console.log("Setpoint: ", Setpoint);
+       //console.log("Input: ", Input);
+
+
+       // How long since we lasat calculated
+       var now = millis();
+       var timeChange = now - lastTime;
+       //console.log("timeChange: ",timeChange);
+
+       if(timeChange>=SampleTime) {
+         // Compute all the working error variables
+         var error = Setpoint - Input;
+         //console.log("error: ", error);
+         var dInput = (Input - lastInput);
+         //console.log("Input: ", Input);
+         //console.log("lastInput: ", lastInput);
+         outputSum += (ki * error);
+         //console.log("outputSum-ki: ", outputSum);
+
+         // Compute PID Output
+         outputSum -= kp * dInput;
+         //console.log("kp: ", kp);
+         //console.log("dInput: ", dInput);
+         //console.log("outputSum-kp: ", outputSum);
+
+         if ( outputSum > outMax ) { outputSum = outMax; }
+         else if ( outputSum < outMin ) { outputSum = outMin; }
+
+         // Compute Rest of PID Output
+         Output = outputSum - kd * dInput;
+         console.log("Output: ", Output);
+         event.emit('outputUpdate', Output);
+
+         if ( Output > outMax ) { Output = outMax; }
+         else if ( Output < outMin ) { Output = outMin; }
+
+         //Remember some variables for next time
+         lastInput = Input;
+         lastTime = now;
+       }
+     }
+   }
+
+   var Kp;
+   var Ki;
+   var Kd;
+
+   function SetTunings(Kp, Ki, Kd) {
+     var SampleTimeInSec = (SampleTime)/1000;
+     kp = Kp;
+     ki = Ki * SampleTimeInSec;
+     kd = Kd / SampleTimeInSec;
+   }
+
+   var NewSampleTime;
+   function SetSampleTime(NewSampleTime){
+     if (NewSampleTime > 0) {
+       var ratio  = NewSampleTime / SampleTime;
+       ki *= ratio;
+       kd /= ratio;
+       SampleTime = NewSampleTime;
+     }
+   }
+
+   var Min, Max;
+   function SetOutputLimits(Min, Max){
+     if ( Min > Max ) return;
+     outMin = Min;
+     outMax = Max;
+
+     if ( Output > outMax ) { Output = outMax; }
+     else if ( Output < outMin ) { Output = outMin; }
+
+     if ( outputSum > outMax ) { outputSum = outMax; }
+     else if ( outputSum < outMin ) { outputSum = outMin; }
+   }
+
+
+   //This is the function that calls the PID code and controls the relay
+   setInterval(function() {
+     // call the PID code
+     Compute();
+
+     // turn the element on/off based on pid output (taken from Arduino PID RelayOutput Example)
+     var now = millis();
+
+     if ( now - windowStartTime > WindowSize ) { //time to shift the Relay Window
+       windowStartTime += WindowSize;
+     }
+
+     if ( Output > now - windowStartTime ) {
+       ele.on();       // turn on the element!
+       //if ( DEBUG ) { console.log('element on') };
+     } else {
+       ele.off();       // turn off the element!
+       //if ( DEBUG ) { console.log('element off') };
+     }
+   }, SampleTime);
+
+
 
 });
