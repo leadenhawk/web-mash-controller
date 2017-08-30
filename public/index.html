@@ -19,9 +19,9 @@
         <div id="mode-selector">
           <p> {{ message }} </p>
           <button v-on:click="changeMessageMethod">Change message</button>
-          <button v-on:click="mash = !mash">Mash / Boil</button>
-          <p v-if="mash">Mash mode</p>
-          <p v-else>Boil mode</p>
+          <button v-on:click="mashMode">Mash</button>
+          <button v-on:click="boilMode">Boil</button>
+          <p>mode: {{ mode }} </p>
           <p>Element:</p>
           <button v-on:click='elementLive'>Live</button>
           <button v-on:click='elementOff'>OFF</button>
@@ -40,9 +40,9 @@
 
         <div id="mashInput" v-if="mash">
           <p>mash input</p>
-          <input v-model="inputTemp" type="number" /><p>deg C</p>
+          <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp"/><p>deg C</p>
           <p> {{ inputTemp }} </p>
-          <button v-on:click="sendInputTemp">send to Arduino</button>
+          <button v-on:click="sendInputTemp" >send to Arduino</button>
         </div>
 
         <div id="mashOutput" v-if="mash">

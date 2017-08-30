@@ -15,6 +15,7 @@ function millis() {
 var temp = 0;
 var setTemp = 0;
 var elementState = 0;
+var inAuto = 1;
 
 // Setup JS event emitter
 var event = new EventEmitter();
@@ -65,6 +66,15 @@ io.on('connection', function(socket){
   socket.on('elementOff', function(param){
     if ( DEBUG ) { console.log('Element Live: ' + param)};
     elementState = 0;
+    event.emit('turnElementOff');
+  });
+
+  socket.on('mashModeActive', function(){
+    inAuto = 1;
+  });
+
+  socket.on('boilModeActive', function(){
+    inAuto = 0;
   });
 
 });
@@ -123,6 +133,23 @@ board.on("ready", function() {
     led.off();
     if ( DEBUG ) { console.log('turn off pump') };
   });
+
+  // this event atually controls the element
+  event.on('turnElementOn', function(param){
+    if (elementState == 1) {
+      //if ( DEBUG ) { console.log("element Live"); }
+      ele.on();
+    } else {
+      //if ( DEBUG ) { console.log("element Inactive"); }
+      ele.off();
+    }
+  });
+  event.on('turnElementOff', function(){
+    //if ( DEBUG ) { console.log("turn element off"); }
+    ele.off();
+  });
+
+
   // Conversion from Brett Beauregard's PID tutorials
    // On/Off & Initialization tutorials not implemented(!)
    // Direction tutorial not implemented as not relevant
@@ -137,61 +164,51 @@ board.on("ready", function() {
    var kp, ki, kd;
    var SampleTime;
    var outMin, outMax;
-
+   var Kp = 7500, Ki = 75, Kd = 0;
 
    // Setup
-   SetSampleTime(500);
-   SetTunings(7500, 75, 0);
+   SetSampleTime(50);
+   SetTunings(Kp, Ki, Kd);
 
    //console.log(kp, kd, ki);
    var WindowSize = 5000;
    windowStartTime = millis();
    SetOutputLimits(0, WindowSize);
 
-
    // PID code
    function Compute() {
+     if(!inAuto) return; // doesn't calc PID when in manual mode
+     if(elementState == 0) return; //turns off the PID calcs when the master switch is off
      if ( temp != undefined ) {
        //nathan added this to convert the Brett Beauregard code with existing code
        var Setpoint = setTemp;
        Input = temp;
-       //console.log("temp: ", temp);
-       //console.log("Setpoint: ", Setpoint);
-       //console.log("Input: ", Input);
 
-
-       // How long since we lasat calculated
+       // How long since we last calculated
        var now = millis();
        var timeChange = now - lastTime;
-       //console.log("timeChange: ",timeChange);
+       if ( timeChange >= SampleTime ) {
 
-       if(timeChange>=SampleTime) {
          // Compute all the working error variables
          var error = Setpoint - Input;
-         //console.log("error: ", error);
          var dInput = (Input - lastInput);
-         //console.log("Input: ", Input);
-         //console.log("lastInput: ", lastInput);
+
+         // Compute I Output
          outputSum += (ki * error);
-         //console.log("outputSum-ki: ", outputSum);
 
-         // Compute PID Output
+         // Compute P Output
          outputSum -= kp * dInput;
-         //console.log("kp: ", kp);
-         //console.log("dInput: ", dInput);
-         //console.log("outputSum-kp: ", outputSum);
-
          if ( outputSum > outMax ) { outputSum = outMax; }
          else if ( outputSum < outMin ) { outputSum = outMin; }
 
-         // Compute Rest of PID Output
+         // Compute D Output and sum PID Output
          Output = outputSum - kd * dInput;
-         console.log("Output: ", Output);
-         var outputPerCent = ((Output / WindowSize)*100);
-         io.sockets.emit('outputUpdate', outputPerCent);
-
+         //console.log("Output: ", Output);
          if ( Output > outMax ) { Output = outMax; }
          else if ( Output < outMin ) { Output = outMin; }
+
+         var outputPerCent = ((Output / WindowSize)*100);
+         io.sockets.emit('outputUpdate', outputPerCent);
 
          //Remember some variables for next time
          lastInput = Input;
@@ -235,17 +252,28 @@ board.on("ready", function() {
    }
 
 
-   //This is the function that calls the PID
-   setInterval(function() {
-     // call the PID code
-     Compute();
 
-   }, SampleTime);
 
-   //This is the function that controls the relay
-   setInterval(function() {
-     // call the PID code
-     //Compute();
+   // This function is for controlling the element in Manual mode
+   function manualMode() {
+     if(inAuto) return;
+     Output = manTemp * ( WindowSize / 100 );
+     io.sockets.emit('outputUpdate', Output);
+
+   }
+
+   //This is the function that calls the (PID & manual) code and controls the relay
+
+   /*First we decide on a window size (5000mS say.) We then
+    * set the pid to adjust its output between 0 and that window
+    * size.  Lastly, we add some logic that translates the PID
+    * output into "Relay On Time" with the remainder of the
+    * window being "Relay Off Time"*/
+
+    setInterval(function() {
+      // only 1 of the following will actually run
+      Compute();     // call the PID mode code
+      manualMode();  // call the Manual mode code
 
      // turn the element on/off based on pid output (taken from Arduino PID RelayOutput Example)
      var now = millis();
@@ -255,24 +283,11 @@ board.on("ready", function() {
      }
 
      if ( Output > now - windowStartTime ) {
-       event.emit('turnElementOn');
-       //ele.on();       // turn on the element!
-       if ( DEBUG ) { console.log('element on') };
+       event.emit('turnElementOn'); // turn on the element!
      } else {
-       //ele.off();       // turn off the element!
-       if ( DEBUG ) { console.log('element off') };
+       event.emit('turnElementOff');
      }
-   }, WindowSize);
+   }, SampleTime);
 
-   // this event atually controls the elements
-   event.on('turnElementOn', function(param){
-     if (elementState == 1) {
-       if ( DEBUG ) { console.log("led/element on"); }
-       ele.on();
-     } else {
-       if ( DEBUG ) { console.log("led/element off"); }
-       ele.off();
-     }
-   });
 
 });

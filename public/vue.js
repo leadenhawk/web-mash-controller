@@ -6,12 +6,13 @@ var vueApp = new Vue({
     counter: 0,
     pumpStatus: 'Pump OFF',
     show: true,
-    mash: true,
     temp: "n/a",
     inputTemp: 0,
     inputPerCent: 0,
     elementActive: false,
-    outputPerCent: 0
+    outputPerCent: 0,
+    mode: "Mash",
+    mash: true
   },
   methods: {
     changeMessageMethod(){
@@ -35,8 +36,18 @@ var vueApp = new Vue({
     },
     elementOff(){
       this.elementActive = false;
-      //alert(this.elementActive);
+      alert(this.elementActive);
       socket.emit("elementOff", this.elementActive);
+    },
+    mashMode(){
+      this.mash = true;
+      this.mode = "Mash";
+      socket.emit("mashModeActive")
+    },
+    boilMode(){
+      this.mash = false;
+      this.mode = "Boil";
+      socket.emit("boilModeActive")
     }
   }
 });

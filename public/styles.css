@@ -10,11 +10,12 @@ body{
   display: grid;
 
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-rows: repeat(9, 1fr);
   grid-template-areas:  "ga-banner      ga-banner       ga-banner"
+                        "ga-chart       ga-chart        ga-chart"
                         "ga-mode        ga-mode         ga-outputInd"
-                        "ga-chart       ga-chart        ga-chart"
-                        "ga-chart       ga-chart        ga-chart"
+
+
                         "ga-mashinput   ga-mashoutput   ga-pump"
                         "ga-mashinput   ga-mashoutput   ga-pump"
                         "ga-boilinput   . ."
