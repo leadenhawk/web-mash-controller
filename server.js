@@ -14,6 +14,7 @@ function millis() {
 
 var temp = 0;
 var setTemp = 0;
+var elementState = 0;
 
 // Setup JS event emitter
 var event = new EventEmitter();
@@ -54,6 +55,16 @@ io.on('connection', function(socket){
     if ( DEBUG ) { console.log('Set temp is now ' + param +' deg C')};
     setTemp = param;
     // event.emit('newSetTemp',setTemp);
+  });
+
+  socket.on('elementActive', function(param){
+    if ( DEBUG ) { console.log('Element Live: ' + param)};
+    elementState = 1;
+  });
+
+  socket.on('elementOff', function(param){
+    if ( DEBUG ) { console.log('Element Live: ' + param)};
+    elementState = 0;
   });
 
 });
@@ -244,14 +255,24 @@ board.on("ready", function() {
      }
 
      if ( Output > now - windowStartTime ) {
-       ele.on();       // turn on the element!
-       //if ( DEBUG ) { console.log('element on') };
+       event.emit('turnElementOn');
+       //ele.on();       // turn on the element!
+       if ( DEBUG ) { console.log('element on') };
      } else {
-       ele.off();       // turn off the element!
-       //if ( DEBUG ) { console.log('element off') };
+       //ele.off();       // turn off the element!
+       if ( DEBUG ) { console.log('element off') };
      }
    }, WindowSize);
 
-
+   // this event atually controls the elements
+   event.on('turnElementOn', function(param){
+     if (elementState == 1) {
+       if ( DEBUG ) { console.log("led/element on"); }
+       ele.on();
+     } else {
+       if ( DEBUG ) { console.log("led/element off"); }
+       ele.off();
+     }
+   });
 
 });

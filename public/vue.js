@@ -10,7 +10,7 @@ var vueApp = new Vue({
     temp: "n/a",
     inputTemp: 0,
     inputPerCent: 0,
-    elementOn: false,
+    elementActive: false,
     outputPerCent: 0
   },
   methods: {
@@ -27,6 +27,16 @@ var vueApp = new Vue({
     },
     sendInputTemp(){
       socket.emit('inputTempChanged', this.inputTemp);
+    },
+    elementLive(){
+      this.elementActive = true;
+      //alert(this.elementActive);
+      socket.emit("elementActive", this.elementActive);
+    },
+    elementOff(){
+      this.elementActive = false;
+      //alert(this.elementActive);
+      socket.emit("elementOff", this.elementActive);
     }
   }
 });

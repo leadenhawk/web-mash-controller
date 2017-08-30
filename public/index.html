@@ -22,6 +22,9 @@
           <button v-on:click="mash = !mash">Mash / Boil</button>
           <p v-if="mash">Mash mode</p>
           <p v-else>Boil mode</p>
+          <p>Element:</p>
+          <button v-on:click='elementLive'>Live</button>
+          <button v-on:click='elementOff'>OFF</button>
         </div>
 
         <div id="banner">
@@ -53,8 +56,8 @@
 
         <div id="outputIndicators">
           <p>outputIndicators</p>
-          <p v-if="elementON">element ON</p>
-          <p v-else>element OFF</p>
+          <p v-if="elementActive">element Active</p>
+          <p v-else>element Not Active</p>
           <p>{{ outputPerCent }} %</p>
         </div>
 
