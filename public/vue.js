@@ -7,7 +7,11 @@ var vueApp = new Vue({
     pumpStatus: 'Pump OFF',
     show: true,
     mash: true,
-    temp: "n/a"
+    temp: "n/a",
+    inputTemp: 0,
+    inputPerCent: 0,
+    elementOn: false,
+    outputPerCent: 0
   },
   methods: {
     changeMessageMethod(){
@@ -20,6 +24,9 @@ var vueApp = new Vue({
     pumpOffClicked(){
       this.pumpStatus = "Pump OFF";
       socket.emit('pumpOffButtonPressed');
+    },
+    sendInputTemp(){
+      socket.emit('inputTempChanged', this.inputTemp);
     }
   }
 });

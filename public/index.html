@@ -16,10 +16,9 @@
 
       <div class="grid">
 
-        <div id="random">
+        <div id="mode-selector">
           <p> {{ message }} </p>
           <button v-on:click="changeMessageMethod">Change message</button>
-
           <button v-on:click="mash = !mash">Mash / Boil</button>
           <p v-if="mash">Mash mode</p>
           <p v-else>Boil mode</p>
@@ -38,6 +37,9 @@
 
         <div id="mashInput" v-if="mash">
           <p>mash input</p>
+          <input v-model="inputTemp" type="number" /><p>deg C</p>
+          <p> {{ inputTemp }} </p>
+          <button v-on:click="sendInputTemp">send to Arduino</button>
         </div>
 
         <div id="mashOutput" v-if="mash">
@@ -49,8 +51,17 @@
           <p>boil-input</p>
         </div>
 
-        <div id="boilOutput" v-if="!mash">
-          <p>boil-output</p>
+        <div id="outputIndicators">
+          <p>outputIndicators</p>
+          <p v-if="elementON">element ON</p>
+          <p v-else>element OFF</p>
+          <p>{{ outputPerCent }} %</p>
+        </div>
+
+        <div id="controlValues" v-if="mash">
+          <p>Control Values</p>
+          <button v-on:click="counter += 1">Add 1</button>
+          <p>The button above has been clicked {{ counter }} times.</p>
         </div>
 
         <div id="pump" v-if="mash">
@@ -58,8 +69,6 @@
           <button v-on:click="pumpOnClicked">ON</button>
           <button v-on:click="pumpOffClicked">OFF</button>
           <p> {{ pumpStatus }}</p>
-          <button v-on:click="counter += 1">Add 1</button>
-          <p>The button above has been clicked {{ counter }} times.</p>
         </div>
 
         <div id="footer">

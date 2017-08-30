@@ -8,28 +8,30 @@ body{
 
 .grid{
   display: grid;
-  /*
-  grid-template-columns: 150px 150px 80px;
-  grid-template-rows: 100px auto;
-  grid-gap: 10px 15px;*/
 
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas:  "ga-random      ga-random       ga-random"
-                        "ga-banner      ga-banner       ga-banner"
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-areas:  "ga-banner      ga-banner       ga-banner"
+                        "ga-mode        ga-mode         ga-outputInd"
                         "ga-chart       ga-chart        ga-chart"
                         "ga-chart       ga-chart        ga-chart"
                         "ga-mashinput   ga-mashoutput   ga-pump"
                         "ga-mashinput   ga-mashoutput   ga-pump"
+                        "ga-boilinput   . ."
+                        "ga-boilinput   . ."
+                        "ga-control     ga-control      ga-control"
                         "ga-footer      ga-footer       ga-footer";
-  border: 1px solid black;
+
+  grid-gap: 10px 10px;
 }
-#random{
-  grid-area: ga-random;
+
+#mode-selector{
+  grid-area: ga-mode;
   background-color: skyblue;
-  text-align: center;
+  text-align: left;
   padding-left: 10px;
 }
+
 #banner{
   grid-area: ga-banner;
   background-color: #A0675D;
@@ -61,8 +63,14 @@ body{
   padding-left: 10px;
 }
 
-#boilOutput{
-  grid-area: ga-boiloutput;
+#outputIndicators{
+  grid-area: ga-outputInd;
+  background-color: #F2A25F;
+  padding-left: 10px;
+}
+
+#controlValues{
+  grid-area: ga-control;
   background-color: #F2A25F;
   padding-left: 10px;
 }
