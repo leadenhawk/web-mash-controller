@@ -12,6 +12,7 @@ function millis() {
   return n;
 }
 
+var temp = 0;
 var setTemp = 0;
 
 // Setup JS event emitter
@@ -128,7 +129,7 @@ board.on("ready", function() {
 
 
    // Setup
-   SetSampleTime(1000);
+   SetSampleTime(500);
    SetTunings(7500, 75, 0);
 
    //console.log(kp, kd, ki);
@@ -175,7 +176,8 @@ board.on("ready", function() {
          // Compute Rest of PID Output
          Output = outputSum - kd * dInput;
          console.log("Output: ", Output);
-         event.emit('outputUpdate', Output);
+         var outputPerCent = ((Output / WindowSize)*100);
+         io.sockets.emit('outputUpdate', outputPerCent);
 
          if ( Output > outMax ) { Output = outMax; }
          else if ( Output < outMin ) { Output = outMin; }
@@ -222,10 +224,17 @@ board.on("ready", function() {
    }
 
 
-   //This is the function that calls the PID code and controls the relay
+   //This is the function that calls the PID
    setInterval(function() {
      // call the PID code
      Compute();
+
+   }, SampleTime);
+
+   //This is the function that controls the relay
+   setInterval(function() {
+     // call the PID code
+     //Compute();
 
      // turn the element on/off based on pid output (taken from Arduino PID RelayOutput Example)
      var now = millis();
@@ -241,7 +250,7 @@ board.on("ready", function() {
        ele.off();       // turn off the element!
        //if ( DEBUG ) { console.log('element off') };
      }
-   }, SampleTime);
+   }, WindowSize);
 
 
 

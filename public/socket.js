@@ -81,7 +81,9 @@ socket.on('tempChange', function(temp){
   vueApp.temp = temp;
 });
 // *****************************************************************************
-
+socket.on('outputUpdate', function(param){
+  vueApp.outputPerCent = param;
+});
 
 // Pump Button Code ************************************************************
 // var pumpState = false;
