@@ -1,10 +1,4 @@
-body{
-  color: #F8E077;
-  background-color: #4F404D;
-  font-size: 12px;
-  font-family: 'Montserrat', sans-serif;
 
-}
 /*
 .grid{
   display: grid;*/
@@ -33,25 +27,34 @@ body{
 
 
 /*}*/
+body{
+  color: #F8E077;
+  background-color: #4F404D;
+  font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+}
 
-/*@supports (grid-area: auto) {*/
-	/*@media screen and (min-width: 56.25em) {*/
-  	@media screen and (min-width: 800px) {
-		.grid {
+@supports (grid-area: auto) {
+	@media screen and (min-width: 800px) {
+
+    .grid {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(400px,1fr));
-      /*grid-template-rows: 1fr 1fr 1fr 1fr;*/
-      grid-gap: 20px;
+      grid-template-rows: repeat(10,1fr);
+      grid-gap: 50px;
     }
+
+    /*.grid div{
+      background-color: grey;
+      padding-left: 10px;
+      padding-top: 5px;
+      border: 2px solid black;
+    }*/
 	}
-/*}*/
-
-
-.grid div{
-  background-color: grey;
-  padding-left: 10px;
-  padding-top: 5px;
 }
+
+
+
 
 /*#mode-selector{
   grid-area: ga-mode;
