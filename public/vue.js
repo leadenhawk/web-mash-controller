@@ -8,11 +8,14 @@ var vueApp = new Vue({
     show: true,
     temp: "n/a",
     inputTemp: 0,
-    inputPerCent: 0,
+    sentInputTemp: 0,
+    inputPercent: 0,
+    sentInputPercent: 0,
     elementActive: false,
     outputPerCent: 0,
     mode: "Mash",
-    mash: true
+    mash: true,
+    elementStatus: "Element OFF"
   },
   methods: {
     changeMessageMethod(){
@@ -28,6 +31,11 @@ var vueApp = new Vue({
     },
     sendInputTemp(){
       socket.emit('inputTempChanged', this.inputTemp);
+      this.sentInputTemp = this.inputTemp;
+    },
+    sendInputPercent(){
+      socket.emit('inputPercentChanged', this.inputPercent);
+      this.sentInputPercent = this.inputPercent;
     },
     elementLive(){
       this.elementActive = true;
@@ -36,7 +44,7 @@ var vueApp = new Vue({
     },
     elementOff(){
       this.elementActive = false;
-      alert(this.elementActive);
+      //alert(this.elementActive);
       socket.emit("elementOff", this.elementActive);
     },
     mashMode(){

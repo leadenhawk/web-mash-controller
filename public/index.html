@@ -41,7 +41,7 @@
         <div id="mashInput" v-if="mash">
           <p>mash input</p>
           <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp"/><p>deg C</p>
-          <p> {{ inputTemp }} </p>
+          <p> {{ sentInputTemp }} </p>
           <button v-on:click="sendInputTemp" >send to Arduino</button>
         </div>
 
@@ -52,13 +52,16 @@
 
         <div id="boilInput" v-if="!mash">
           <p>boil-input</p>
+          <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent"/><p>%</p>
+          <p> {{ sentInputPercent }} </p>
         </div>
 
         <div id="outputIndicators">
           <p>outputIndicators</p>
           <p v-if="elementActive">element Active</p>
           <p v-else>element Not Active</p>
-          <p>{{ outputPerCent }} %</p>
+          <p> {{ outputPercent }} %</p>
+          <p> {{ elementStatus }} </p>
         </div>
 
         <div id="controlValues" v-if="mash">

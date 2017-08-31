@@ -82,7 +82,16 @@ socket.on('tempChange', function(temp){
 });
 // *****************************************************************************
 socket.on('outputUpdate', function(param){
-  vueApp.outputPerCent = param;
+  vueApp.outputPercent = param;
+});
+
+// *****************************************************************************
+socket.on('elementOn', function(){
+  vueApp.elementStatus = "Element ON";
+});
+
+socket.on('elementOff', function(){
+  vueApp.elementStatus = "Element OFF";
 });
 
 // Pump Button Code ************************************************************

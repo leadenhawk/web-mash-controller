@@ -14,6 +14,7 @@ function millis() {
 
 var temp = 0;
 var setTemp = 0;
+var manPercent = 0;
 var elementState = 0;
 var inAuto = 1;
 
@@ -55,8 +56,13 @@ io.on('connection', function(socket){
   socket.on('inputTempChanged', function(param){
     if ( DEBUG ) { console.log('Set temp is now ' + param +' deg C')};
     setTemp = param;
-    // event.emit('newSetTemp',setTemp);
   });
+  socket.on('inputPercentChanged', function(param){
+    if ( DEBUG ) { console.log('Set output is now ' + param +' %')};
+    manPercent = param;
+  });
+
+
 
   socket.on('elementActive', function(param){
     if ( DEBUG ) { console.log('Element Live: ' + param)};
@@ -138,14 +144,17 @@ board.on("ready", function() {
   event.on('turnElementOn', function(param){
     if (elementState == 1) {
       //if ( DEBUG ) { console.log("element Live"); }
+      io.sockets.emit('elementOn');
       ele.on();
     } else {
       //if ( DEBUG ) { console.log("element Inactive"); }
+      io.sockets.emit('elementOff');
       ele.off();
     }
   });
   event.on('turnElementOff', function(){
     //if ( DEBUG ) { console.log("turn element off"); }
+    io.sockets.emit('elementOff');
     ele.off();
   });
 
@@ -207,8 +216,8 @@ board.on("ready", function() {
          if ( Output > outMax ) { Output = outMax; }
          else if ( Output < outMin ) { Output = outMin; }
 
-         var outputPerCent = ((Output / WindowSize)*100);
-         io.sockets.emit('outputUpdate', outputPerCent);
+         var outputPercent = ((Output / WindowSize)*100);
+         io.sockets.emit('outputUpdate', outputPercent);
 
          //Remember some variables for next time
          lastInput = Input;
@@ -257,8 +266,9 @@ board.on("ready", function() {
    // This function is for controlling the element in Manual mode
    function manualMode() {
      if(inAuto) return;
-     Output = manTemp * ( WindowSize / 100 );
-     io.sockets.emit('outputUpdate', Output);
+     Output = manPercent * ( WindowSize / 100 );
+     var outputAsPercent = (Output / WindowSize)*100;
+     io.sockets.emit('outputUpdate', outputAsPercent);
 
    }
 
