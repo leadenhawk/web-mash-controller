@@ -2,6 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://unpkg.com/vue"></script>
 
@@ -16,6 +18,10 @@
 
       <div class="grid">
 
+        <div id="banner">
+          <h1>Nathan's Mash and Boil Controller</h1>
+        </div>
+
         <div id="mode-selector">
           <p> {{ message }} </p>
           <button v-on:click="changeMessageMethod">Change message</button>
@@ -27,30 +33,26 @@
           <button v-on:click='elementOff'>OFF</button>
         </div>
 
-        <div id="banner">
-          <h1>Nathan's Mash and Boil Controller</h1>
-        </div>
-
-        <div id="chart" v-if="mash">
+        <div id="chart">
           <p>chart</p>
           <button v-on:click="show = !show">Show / Hide</button>
           <p v-if="show">I'm part time visible</p>
           <p v-else>Am I visible?</p>
         </div>
 
-        <div id="mashInput" v-if="mash">
+        <div id="mashInput">
           <p>mash input</p>
           <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp"/><p>deg C</p>
           <p> {{ sentInputTemp }} </p>
           <button v-on:click="sendInputTemp" >send to Arduino</button>
         </div>
 
-        <div id="mashOutput" v-if="mash">
+        <div id="mashOutput">
           <p> Temperature: {{ temp }} degC</p>
           <p>mash-output</p>
         </div>
 
-        <div id="boilInput" v-if="!mash">
+        <div id="boilInput">
           <p>boil-input</p>
           <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent"/><p>%</p>
           <p> {{ sentInputPercent }} </p>
@@ -64,13 +66,13 @@
           <p> {{ elementStatus }} </p>
         </div>
 
-        <div id="controlValues" v-if="mash">
+        <div id="controlValues">
           <p>Control Values</p>
           <button v-on:click="counter += 1">Add 1</button>
           <p>The button above has been clicked {{ counter }} times.</p>
         </div>
 
-        <div id="pump" v-if="mash">
+        <div id="pump">
           <p>pump</p>
           <button v-on:click="pumpOnClicked">ON</button>
           <button v-on:click="pumpOffClicked">OFF</button>

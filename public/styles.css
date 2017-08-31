@@ -5,28 +5,55 @@ body{
   font-family: 'Montserrat', sans-serif;
 
 }
-
+/*
 .grid{
-  display: grid;
+  display: grid;*/
 
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: repeat(9, 1fr);
+  /*grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(9, auto);
+  grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
   grid-template-areas:  "ga-banner      ga-banner       ga-banner"
-                        "ga-chart       ga-chart        ga-chart"
+
                         "ga-mode        ga-mode         ga-outputInd"
-
-
                         "ga-mashinput   ga-mashoutput   ga-pump"
                         "ga-mashinput   ga-mashoutput   ga-pump"
                         "ga-boilinput   . ."
                         "ga-boilinput   . ."
+                        "ga-chart       ga-chart        ga-chart"
                         "ga-control     ga-control      ga-control"
                         "ga-footer      ga-footer       ga-footer";
 
-  grid-gap: 10px 10px;
+  grid-gap: 10px 10px;*/
+
+
+  /*grid-template-columns: repeat(auto-fill, minmax(400px,1fr));
+  grid-template-rows: repeat(auto-fill, 100px);
+  grid-gap:10px;*/
+
+
+
+/*}*/
+
+/*@supports (grid-area: auto) {*/
+	/*@media screen and (min-width: 56.25em) {*/
+  	@media screen and (min-width: 800px) {
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(400px,1fr));
+      /*grid-template-rows: 1fr 1fr 1fr 1fr;*/
+      grid-gap: 20px;
+    }
+	}
+/*}*/
+
+
+.grid div{
+  background-color: grey;
+  padding-left: 10px;
+  padding-top: 5px;
 }
 
-#mode-selector{
+/*#mode-selector{
   grid-area: ga-mode;
   background-color: skyblue;
   text-align: left;
@@ -86,4 +113,4 @@ body{
   grid-area: ga-footer;
   background-color: #A99A8A;
   padding-left: 10px;
-}
+}*/
