@@ -15,7 +15,9 @@ var vueApp = new Vue({
     outputPerCent: 0,
     mode: "Mash",
     mash: true,
-    elementStatus: "Element OFF"
+    elementStatus: "Element OFF",
+    fntSz: 12,
+    buttonColour: "blue"
   },
   methods: {
     changeMessageMethod(){
@@ -56,6 +58,12 @@ var vueApp = new Vue({
       this.mash = false;
       this.mode = "Boil";
       socket.emit("boilModeActive")
+    },
+    buttonOn(){
+      this.fntSz++;
+    },
+    buttonOff(){
+      this.buttonColour = "red";
     }
   }
 });

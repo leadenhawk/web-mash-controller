@@ -18,48 +18,48 @@
 
       <div class="grid">
 
-        <div id="banner">
+        <div id="banner" class="panel">
           <h1>Nathan's Mash and Boil Controller</h1>
         </div>
 
-        <div id="mode-selector">
+        <div id="mode-selector" class="panel">
           <p> {{ message }} </p>
           <button v-on:click="changeMessageMethod">Change message</button>
           <button v-on:click="mashMode">Mash</button>
           <button v-on:click="boilMode">Boil</button>
           <p>mode: {{ mode }} </p>
           <p>Element:</p>
-          <button v-on:click='elementLive'>Live</button>
-          <button v-on:click='elementOff'>OFF</button>
+          <button v-on:click='elementLive' class="onOffButton">Live</button>
+          <button v-on:click='elementOff' class="onOffButton">OFF</button>
         </div>
 
-        <div id="chart">
+        <div id="chart" class="panel">
           <p>chart</p>
           <button v-on:click="show = !show">Show / Hide</button>
           <p v-if="show">I'm part time visible</p>
           <p v-else>Am I visible?</p>
         </div>
 
-        <div id="mashInput">
+        <div id="mashInput" class="panel">
           <p>mash input</p>
           <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp"/><p>deg C</p>
           <p> {{ sentInputTemp }} </p>
           <button v-on:click="sendInputTemp" >send to Arduino</button>
         </div>
 
-        <div id="mashOutput">
+        <div id="mashOutput" class="panel">
           <p> Temperature: {{ temp }} degC</p>
           <p>mash-output</p>
         </div>
 
-        <div id="boilInput">
+        <div id="boilInput" class="panel">
           <p>boil-input</p>
           <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent"/><p>%</p>
           <p> {{ sentInputPercent }} </p>
           <button v-on:click="sendInputPercent" >send to Arduino</button>
         </div>
 
-        <div id="outputIndicators">
+        <div id="outputIndicators" class="panel">
           <p>outputIndicators</p>
           <p v-if="elementActive">element Active</p>
           <p v-else>element Not Active</p>
@@ -67,21 +67,27 @@
           <p> {{ elementStatus }} </p>
         </div>
 
-        <div id="controlValues">
+        <div id="controlValues" class="panel">
           <p>Control Values</p>
           <button v-on:click="counter += 1">Add 1</button>
           <p>The button above has been clicked {{ counter }} times.</p>
         </div>
 
-        <div id="pump">
+        <div id="pump" class="panel">
           <p>pump</p>
-          <button v-on:click="pumpOnClicked">ON</button>
-          <button v-on:click="pumpOffClicked">OFF</button>
+          <button v-on:click="pumpOnClicked" class="onOffButton">ON</button>
+          <button v-on:click="pumpOffClicked" class="onOffButton">OFF</button>
           <p> {{ pumpStatus }}</p>
         </div>
 
-        <div id="footer">
+        <div id="footer" class="panel">
           <p>footer</p>
+          <button v-on:click="buttonOn" v-bind:style="{ fontSize: fntSz + 'px' }">Increase font size</button>
+          <button v-on:click="fntSz--" v-bind:style="{ fontSize: fntSz + 'px' }">Decrease font size</button>
+          <p v-bind:style="{ fontSize: fntSz + 'px' }">Font size is: {{ fntSz }}</p>
+          <!-- <button v-on:click="buttonOn" >Increase font size</button>
+          <button v-on:click="buttonOff" >Decrease font size</button>
+          <p v-bind:style="{ fontSize: fntSz + 'px' }">Font size is: {{ fntSz }}</p> -->
         </div>
 
       </div>
