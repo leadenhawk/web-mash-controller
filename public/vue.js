@@ -3,39 +3,72 @@ var colours = {
   black: 'black',
   pink: 'pink',
   green: 'green',
-  darkgreen: 'darkgreen'
+  lightred: '#FF5C5C',
+  basered: '#EB1C1C',
+  midred: '#A40404',
+  darkred: '#4B0000',
+  lightgreen: '#BCEF56',
+  basegreen: '#9BDB1A',
+  midgreen: '#679904',
+  darkgreen: '#2F4600',
+  lightblue: '#3AA1A1',
+  baseblue: '#118D8D',
+  midblue: '#036262',
+  darkblue: '#002D2D'
 }
 
 // Button Styles
-var darkgreenButton = {
+var baseButton = {
   display: 'inline-block',
   borderRadius: '4px',
-  backgroundColor: colours.darkgreen,
+  backgroundColor: 'purple',
   border: 'none',
   color: '#FFFFFF',
   textAlign: 'center',
-  fontSize: '28px',
-  padding: '20px',
-  width: '200px',
+  fontSize: '16px',
+  padding: '10px',
+  width: '100px',
   transition: 'all 0.5s',
   cursor: 'pointer',
   margin: '5px'
-}
+};
 
-var pinkButton = {
+var darkgreenButton = baseButton;
+var basegreenButton = baseButton;
+var darkredButton = baseButton;
+var baseredButton = baseButton;
+darkgreenButton.backgroundColor = "black";
+basegreenButton.backgroundColor = 'yellow';
+
+var darkblueButton = {
   display: 'inline-block',
   borderRadius: '4px',
-  backgroundColor: colours.pink,
+  backgroundColor: colours.baseblue,
   border: 'none',
   color: '#FFFFFF',
   textAlign: 'center',
-  fontSize: '28px',
-  padding: '20px',
-  width: '200px',
+  fontSize: '16px',
+  padding: '10px',
+  width: '100px',
   transition: 'all 0.5s',
   cursor: 'pointer',
   margin: '5px'
-}
+};
+
+var baseblueButton = {
+  display: 'inline-block',
+  borderRadius: '4px',
+  backgroundColor: colours.baseblue,
+  border: 'none',
+  color: '#FFFFFF',
+  textAlign: 'center',
+  fontSize: '16px',
+  padding: '10px',
+  width: '100px',
+  transition: 'all 0.5s',
+  cursor: 'pointer',
+  margin: '5px'
+};
 
 // Vue code ********************************************************************
 var vueApp = new Vue({
@@ -55,8 +88,16 @@ var vueApp = new Vue({
     mode: "Mash",
     mash: true,
     elementStatus: "Element OFF",
-    onButtonIsOffStyle: darkgreenButton,
-    buttonCol: 'red'
+    // onButtonIsOffStyle: darkgreenButton,
+    buttonCol: 'red',
+    pumpOnButtonStyle: darkgreenButton,
+    pumpOffButtonStyle: darkredButton,
+    elementLiveButtonStyle: darkgreenButton,
+    elementOffButtonStyle: baseredButton,
+    mashModeButtonStyle: baseblueButton,
+    boilModeButtonStyle: darkblueButton,
+    chartButtonStyle: darkblueButton,
+    sendInputButtonStyle: darkblueButton
   },
   methods: {
     changeMessageMethod: function(){
@@ -78,16 +119,35 @@ var vueApp = new Vue({
       socket.emit('inputPercentChanged', this.inputPercent);
       this.sentInputPercent = this.inputPercent;
     },
+
+    //Element Live Button
+    elementLiveHandler(){
+      this.elementLive();
+      this.changeElementLiveButtonStyle();
+    },
     elementLive(){
       this.elementActive = true;
-      //alert(this.elementActive);
       socket.emit("elementActive", this.elementActive);
+    },
+    changeElementLiveButtonStyle(){
+      this.elementLiveButtonStyle = basegreenButton;
+      this.elementOffButtonStyle = darkredButton;
+    },
+
+    // Element Off Button
+    elementOffHandler(){
+      this.elementOff();
+      this.changeElementOffButtonStyle();
     },
     elementOff(){
       this.elementActive = false;
-      //alert(this.elementActive);
       socket.emit("elementOff", this.elementActive);
     },
+    changeElementOffButtonStyle(){
+      this.elementOffButtonStyle = baseredButton;
+      this.elementLiveButtonStyle = darkgreenButton;
+    },
+
     mashMode(){
       this.mash = true;
       this.mode = "Mash";
@@ -97,15 +157,6 @@ var vueApp = new Vue({
       this.mash = false;
       this.mode = "Boil";
       socket.emit("boilModeActive")
-    },
-    buttonOn(){
-      // this.fntSz++;
-    },
-    buttonOff(){
-      // this.buttonColour = "red";
-    },
-    changeButtonStyle(){
-      this.onButtonIsOffStyle = pinkButton;
     },
     method1: function(arg){
       alert('method1: ', arg);
