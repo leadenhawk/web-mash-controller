@@ -1,4 +1,4 @@
-// Colours
+// Defines Colours
 var colours = {
   black: 'black',
   pink: 'pink',
@@ -17,7 +17,7 @@ var colours = {
   darkblue: '#002D2D'
 }
 
-// Button Styles
+// Defines Button Styles
 var baseButton = {
   display: 'inline-block',
   borderRadius: '4px',
@@ -33,48 +33,46 @@ var baseButton = {
   margin: '5px'
 };
 
-var darkgreenButton = baseButton;
-var basegreenButton = baseButton;
-var darkredButton = baseButton;
-var baseredButton = baseButton;
-darkgreenButton.backgroundColor = "black";
-basegreenButton.backgroundColor = 'yellow';
+// Function that copies objects
+function shallowCopy( original )
+{
+    // First create an empty object with same prototype of our original source
+    var clone = Object.create( Object.getPrototypeOf( original ) ) ;
+    var i , keys = Object.getOwnPropertyNames( original ) ;
+    for ( i = 0 ; i < keys.length ; i ++ )
+    {
+        // copy each property into the clone
+        Object.defineProperty( clone , keys[ i ] ,
+            Object.getOwnPropertyDescriptor( original , keys[ i ] )
+        ) ;
+    }
+    return clone ;
+}
 
-var darkblueButton = {
-  display: 'inline-block',
-  borderRadius: '4px',
-  backgroundColor: colours.baseblue,
-  border: 'none',
-  color: '#FFFFFF',
-  textAlign: 'center',
-  fontSize: '16px',
-  padding: '10px',
-  width: '100px',
-  transition: 'all 0.5s',
-  cursor: 'pointer',
-  margin: '5px'
-};
+// Creates different coloured buttons
+var darkgreenButton = shallowCopy(baseButton);
+darkgreenButton.backgroundColor = colours.darkgreen;
 
-var baseblueButton = {
-  display: 'inline-block',
-  borderRadius: '4px',
-  backgroundColor: colours.baseblue,
-  border: 'none',
-  color: '#FFFFFF',
-  textAlign: 'center',
-  fontSize: '16px',
-  padding: '10px',
-  width: '100px',
-  transition: 'all 0.5s',
-  cursor: 'pointer',
-  margin: '5px'
-};
+var basegreenButton = shallowCopy(baseButton);
+basegreenButton.backgroundColor = colours.basegreen;
+
+var darkredButton = shallowCopy(baseButton);
+darkredButton.backgroundColor = colours.darkred;
+
+var baseredButton = shallowCopy(baseButton);
+baseredButton.backgroundColor = colours.basered;
+
+var darkblueButton = shallowCopy(baseButton);
+darkblueButton.backgroundColor = colours.darkblue;
+
+var baseblueButton = shallowCopy(baseButton);
+baseblueButton.backgroundColor = colours.baseblue;
+
 
 // Vue code ********************************************************************
 var vueApp = new Vue({
   el: '#vueApp',
   data: {
-    message: 'Hello Vue!',
     counter: 0,
     pumpStatus: 'Pump OFF',
     show: true,
@@ -88,33 +86,52 @@ var vueApp = new Vue({
     mode: "Mash",
     mash: true,
     elementStatus: "Element OFF",
-    // onButtonIsOffStyle: darkgreenButton,
     buttonCol: 'red',
     pumpOnButtonStyle: darkgreenButton,
-    pumpOffButtonStyle: darkredButton,
+    pumpOffButtonStyle: baseredButton,
     elementLiveButtonStyle: darkgreenButton,
     elementOffButtonStyle: baseredButton,
-    mashModeButtonStyle: baseblueButton,
-    boilModeButtonStyle: darkblueButton,
-    chartButtonStyle: darkblueButton,
-    sendInputButtonStyle: darkblueButton
+    mashModeButtonStyle: basegreenButton,
+    boilModeButtonStyle: darkredButton,
+    chartButtonStyle: baseblueButton,
+    sendInputButtonStyle: baseblueButton
   },
   methods: {
-    changeMessageMethod: function(){
-      this.message = "Changed the Vue message!";
+    // Pump On Button
+    pumpOnHandler(){
+      this.pumpOnClicked();
+      this.changePumpOnButtonStyle();
     },
     pumpOnClicked(){
       this.pumpStatus = "Pump ON";
       socket.emit('pumpOnButtonPressed');
     },
+    changePumpOnButtonStyle(){
+      this.pumpOnButtonStyle = basegreenButton;
+      this.pumpOffButtonStyle = darkredButton;
+    },
+
+    // Pump Off Button
+    pumpOffHandler(){
+      this.pumpOffClicked();
+      this.changePumpOffButtonStyle();
+    },
     pumpOffClicked(){
       this.pumpStatus = "Pump OFF";
       socket.emit('pumpOffButtonPressed');
     },
+    changePumpOffButtonStyle(){
+      this.pumpOnButtonStyle = darkgreenButton;
+      this.pumpOffButtonStyle = baseredButton;
+    },
+
+    // Send temp to arduino button
     sendInputTemp(){
       socket.emit('inputTempChanged', this.inputTemp);
       this.sentInputTemp = this.inputTemp;
     },
+
+    // Send percent to arduino button
     sendInputPercent(){
       socket.emit('inputPercentChanged', this.inputPercent);
       this.sentInputPercent = this.inputPercent;
@@ -148,25 +165,34 @@ var vueApp = new Vue({
       this.elementLiveButtonStyle = darkgreenButton;
     },
 
+    // Mash Mode Button
+    mashModeHandler(){
+      this.mashMode();
+      this.changeMashModeButtonStyle();
+    },
     mashMode(){
       this.mash = true;
       this.mode = "Mash";
       socket.emit("mashModeActive")
+    },
+    changeMashModeButtonStyle(){
+      this.mashModeButtonStyle = basegreenButton;
+      this.boilModeButtonStyle = darkredButton;
+    },
+
+    // Boil Mode Button
+    boilModeHandler(){
+      this.boilMode();
+      this.changeBoilModeButtonStyle();
     },
     boilMode: function(){
       this.mash = false;
       this.mode = "Boil";
       socket.emit("boilModeActive")
     },
-    method1: function(arg){
-      alert('method1: ', arg);
-    },
-    method1: function(arg){
-      alert('method2: ', arg);
-    },
-    handler: function(arg1, arg2){
-      this.method1(arg1);
-      this.method2(arg2);
+    changeBoilModeButtonStyle(){
+      this.mashModeButtonStyle = darkredButton;
+      this.boilModeButtonStyle = basegreenButton;
     }
   }
 });

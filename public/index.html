@@ -23,14 +23,20 @@
         </div>
 
         <div id="mode-selector" class="panel">
-          <p> {{ message }} </p>
-          <button v-on:click="changeMessageMethod">Change message</button>
-          <button v-on:click="mashMode" v-bind:style="mashModeButtonStyle">Mash</button>
-          <button v-on:click="boilMode" v-bind:style="boilModeButtonStyle">Boil</button>
+          <button v-on:click="mashModeHandler" v-bind:style="mashModeButtonStyle">Mash</button>
+          <button v-on:click="boilModeHandler" v-bind:style="boilModeButtonStyle">Boil</button>
           <p>mode: {{ mode }} </p>
           <p>Element:</p>
           <button v-on:click='elementLiveHandler' v-bind:style="elementLiveButtonStyle">Live</button>
           <button v-on:click='elementOffHandler' v-bind:style="elementOffButtonStyle">OFF</button>
+        </div>
+
+        <div id="outputIndicators" class="panel">
+          <p>outputIndicators</p>
+          <p v-if="elementActive">element Active</p>
+          <p v-else>element Not Active</p>
+          <p> {{ outputPercent }} %</p>
+          <p> {{ elementStatus }} </p>
         </div>
 
         <div id="chart" class="panel">
@@ -42,7 +48,7 @@
 
         <div id="mashInput" class="panel">
           <p>mash input</p>
-          <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp"/><p>deg C</p>
+          <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp" min="0" max="100"/><p>deg C</p>
           <p> {{ sentInputTemp }} </p>
           <button v-on:click="sendInputTemp" v-bind:style="sendInputButtonStyle">send to Arduino</button>
         </div>
@@ -54,17 +60,9 @@
 
         <div id="boilInput" class="panel">
           <p>boil-input</p>
-          <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent"/><p>%</p>
+          <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent" min="0" max="100"/><p>%</p>
           <p> {{ sentInputPercent }} </p>
           <button v-on:click="sendInputPercent" v-bind:style="sendInputButtonStyle">send to Arduino</button>
-        </div>
-
-        <div id="outputIndicators" class="panel">
-          <p>outputIndicators</p>
-          <p v-if="elementActive">element Active</p>
-          <p v-else>element Not Active</p>
-          <p> {{ outputPercent }} %</p>
-          <p> {{ elementStatus }} </p>
         </div>
 
         <div id="controlValues" class="panel">
@@ -75,18 +73,12 @@
 
         <div id="pump" class="panel">
           <p>pump</p>
-          <button v-on:click="pumpOnClicked" v-bind:style="pumpOnButtonStyle">ON</button>
-          <button v-on:click="pumpOffClicked" v-bind:style="pumpOffButtonStyle">OFF</button>
+          <button v-on:click="pumpOnHandler" v-bind:style="pumpOnButtonStyle">ON</button>
+          <button v-on:click="pumpOffHandler" v-bind:style="pumpOffButtonStyle">OFF</button>
           <p> {{ pumpStatus }}</p>
         </div>
 
         <div id="footer" class="panel">
-          <p>footer</p>
-          <!-- <button v-on:click="changeButtonStyle" v-bind:style="onButtonIsOffStyle">On</button>
-          <button v-on:click="changeButtonStyle" v-bind:style="onOffButtonStyle">Off</button> -->
-          <button @click="handler('foo','bar')">
-            Hi, click me!
-          </button>
         </div>
 
       </div>
