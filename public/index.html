@@ -29,7 +29,7 @@
           <button v-on:click="boilMode">Boil</button>
           <p>mode: {{ mode }} </p>
           <p>Element:</p>
-          <button v-on:click='elementLive' class="onOffButton">Live</button>
+          <button v-on:click='elementLive' v-bind:style="onButtonIsOffStyle">Live</button>
           <button v-on:click='elementOff' class="onOffButton">OFF</button>
         </div>
 
@@ -75,19 +75,18 @@
 
         <div id="pump" class="panel">
           <p>pump</p>
-          <button v-on:click="pumpOnClicked" class="onOffButton">ON</button>
+          <button v-on:click={"pumpOnClicked","changeButtonStyle"} v-bind:style="onButtonIsOffStyle">ON</button>
           <button v-on:click="pumpOffClicked" class="onOffButton">OFF</button>
           <p> {{ pumpStatus }}</p>
         </div>
 
         <div id="footer" class="panel">
           <p>footer</p>
-          <button v-on:click="buttonOn" v-bind:style="{ fontSize: fntSz + 'px' }">Increase font size</button>
-          <button v-on:click="fntSz--" v-bind:style="{ fontSize: fntSz + 'px' }">Decrease font size</button>
-          <p v-bind:style="{ fontSize: fntSz + 'px' }">Font size is: {{ fntSz }}</p>
-          <!-- <button v-on:click="buttonOn" >Increase font size</button>
-          <button v-on:click="buttonOff" >Decrease font size</button>
-          <p v-bind:style="{ fontSize: fntSz + 'px' }">Font size is: {{ fntSz }}</p> -->
+          <button v-on:click="changeButtonStyle" v-bind:style="onButtonIsOffStyle">On</button>
+          <button v-on:click="changeButtonStyle" v-bind:style="onOffButtonStyle">Off</button>
+          <button @click="handler('foo','bar')">
+            Hi, click me!
+          </button>
         </div>
 
       </div>

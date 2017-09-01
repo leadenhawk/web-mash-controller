@@ -1,4 +1,43 @@
-// Vue code
+// Colours
+var colours = {
+  black: 'black',
+  pink: 'pink',
+  green: 'green',
+  darkgreen: 'darkgreen'
+}
+
+// Button Styles
+var darkgreenButton = {
+  display: 'inline-block',
+  borderRadius: '4px',
+  backgroundColor: colours.darkgreen,
+  border: 'none',
+  color: '#FFFFFF',
+  textAlign: 'center',
+  fontSize: '28px',
+  padding: '20px',
+  width: '200px',
+  transition: 'all 0.5s',
+  cursor: 'pointer',
+  margin: '5px'
+}
+
+var pinkButton = {
+  display: 'inline-block',
+  borderRadius: '4px',
+  backgroundColor: colours.pink,
+  border: 'none',
+  color: '#FFFFFF',
+  textAlign: 'center',
+  fontSize: '28px',
+  padding: '20px',
+  width: '200px',
+  transition: 'all 0.5s',
+  cursor: 'pointer',
+  margin: '5px'
+}
+
+// Vue code ********************************************************************
 var vueApp = new Vue({
   el: '#vueApp',
   data: {
@@ -16,11 +55,11 @@ var vueApp = new Vue({
     mode: "Mash",
     mash: true,
     elementStatus: "Element OFF",
-    fntSz: 12,
-    buttonColour: "blue"
+    onButtonIsOffStyle: darkgreenButton,
+    buttonCol: 'red'
   },
   methods: {
-    changeMessageMethod(){
+    changeMessageMethod: function(){
       this.message = "Changed the Vue message!";
     },
     pumpOnClicked(){
@@ -54,16 +93,29 @@ var vueApp = new Vue({
       this.mode = "Mash";
       socket.emit("mashModeActive")
     },
-    boilMode(){
+    boilMode: function(){
       this.mash = false;
       this.mode = "Boil";
       socket.emit("boilModeActive")
     },
     buttonOn(){
-      this.fntSz++;
+      // this.fntSz++;
     },
     buttonOff(){
-      this.buttonColour = "red";
+      // this.buttonColour = "red";
+    },
+    changeButtonStyle(){
+      this.onButtonIsOffStyle = pinkButton;
+    },
+    method1: function(arg){
+      alert('method1: ', arg);
+    },
+    method1: function(arg){
+      alert('method2: ', arg);
+    },
+    handler: function(arg1, arg2){
+      this.method1(arg1);
+      this.method2(arg2);
     }
   }
 });
