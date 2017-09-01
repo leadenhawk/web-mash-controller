@@ -27,7 +27,7 @@ var baseButton = {
   textAlign: 'center',
   fontSize: '16px',
   padding: '10px',
-  width: '100px',
+  width: '150px',
   transition: 'all 0.5s',
   cursor: 'pointer',
   margin: '5px'

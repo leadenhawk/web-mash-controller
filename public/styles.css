@@ -7,8 +7,9 @@
 
 body {
 	--backgroundcolour: #292929;
-	--fontcolour: #F8E077;
+	--fontcolour: #f8f8f8;
 }
+
 
 /* styles */
 
@@ -30,6 +31,18 @@ body{
   font-family: 'Montserrat', sans-serif;
 }
 
+input[type=number] {
+	color: var(--fontcolour);
+	background-color: var(--backgroundcolour);
+	font-size: 18px;
+	width: 80px;
+	padding: 6px 10px;
+	margin: 4px 0;
+	box-sizing: border-box;
+	border: 2px solid var(--backgroundcolour);
+	border-radius: 5px;
+}
+
 .panel{
 	background: linear-gradient(to right, var(--panelColorOne), var(--panelColorTwo));
 	/*background-color: grey;*/
@@ -39,42 +52,52 @@ body{
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#mode-selector{
+/*#mode-selector{
+	grid-area: mode;
 
 }
 
 #banner{
+	grid-area: banner;
 
 }
 
 #chart{
+	grid-area: chart;
 
 }
 
 #mashInput{
+	grid-area: mashIn;
 
 }
 
 #mashOutput{
+	grid-area: mashOut;
 
 }
 
 #boilInput{
+	grid-area: boilIn;
 
 }
 
 #outputIndicators{
+	grid-area: output;
 
 }
 
 #controlValues{
+	grid-area: control;
 
 }
 
 #pump{
+	grid-area: pump;
 
 }
 
 #footer{
+	grid-area: footer;
 
-}
+}*/

@@ -48,8 +48,8 @@
 
         <div id="mashInput" class="panel">
           <p>mash input</p>
-          <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp" min="0" max="100"/><p>deg C</p>
-          <p> {{ sentInputTemp }} </p>
+          <p> {{ sentInputTemp + ' °C' }}</p>
+          <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp" min="0" max="100" step="0.1"/>
           <button v-on:click="sendInputTemp" v-bind:style="sendInputButtonStyle">send to Arduino</button>
         </div>
 
@@ -60,15 +60,15 @@
 
         <div id="boilInput" class="panel">
           <p>boil-input</p>
-          <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent" min="0" max="100"/><p>%</p>
-          <p> {{ sentInputPercent }} </p>
+          <p> {{ sentInputPercent + ' %'}} </p>
+          <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent" min="0" max="100" step="0.1"/>
           <button v-on:click="sendInputPercent" v-bind:style="sendInputButtonStyle">send to Arduino</button>
         </div>
 
         <div id="controlValues" class="panel">
           <p>Control Values</p>
-          <button v-on:click="counter += 1">Add 1</button>
-          <p>The button above has been clicked {{ counter }} times.</p>
+          <!-- <button v-on:click="counter += 1">Add 1</button> -->
+          <!-- <p>The button above has been clicked {{ counter }} times.</p> -->
         </div>
 
         <div id="pump" class="panel">
