@@ -203,11 +203,10 @@ var vueApp = new Vue({
     // Mash Mode Button
     mashModeHandler(){
       this.mashMode();
-      this.changeMashModeButtonStyle();
+      // this.changeMashModeButtonStyle();
     },
     mashMode(){
-      // this.mash = true;
-      this.mode = "Mash";
+      // this.mode = "Mash";
       socket.emit("mashModeActive")
     },
     changeMashModeButtonStyle(){
@@ -219,11 +218,10 @@ var vueApp = new Vue({
     // Boil Mode Button
     boilModeHandler(){
       this.boilMode();
-      this.changeBoilModeButtonStyle();
+      // this.changeBoilModeButtonStyle();
     },
     boilMode: function(){
-      // this.mash = false;
-      this.mode = "Boil";
+      // this.mode = "Boil";
       socket.emit("boilModeActive")
     },
     changeBoilModeButtonStyle(){

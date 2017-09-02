@@ -57,3 +57,15 @@ socket.on('elementOffPressed',function(){
   vueApp.changeElementOffButtonStyle();
   vueApp.elementLiveStatus = "Not Live";
 });
+
+// Mash Mode button
+socket.on('mashModeActive', function(){
+  vueApp.mode = "Mash";
+  vueApp.changeMashModeButtonStyle();
+});
+
+// Boil Mode button
+socket.on('boilModeActive', function(){
+  vueApp.changeBoilModeButtonStyle();
+  vueApp.mode = "Boil";
+});

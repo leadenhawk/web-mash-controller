@@ -84,10 +84,12 @@ io.on('connection', function(socket){
 
   socket.on('mashModeActive', function(){
     inAuto = 1;
+    io.sockets.emit('mashModeActive');
   });
 
   socket.on('boilModeActive', function(){
     inAuto = 0;
+    io.sockets.emit('boilModeActive');
   });
 
 });
