@@ -87,13 +87,13 @@ socket.on('outputUpdate', function(param){
 
 // *****************************************************************************
 socket.on('elementOn', function(){
-  vueApp.elementStatus = "Element ON";
-  vueApp.elementStyle.backgroundColor = colours.yellow;
+  vueApp.elementStatus = "ON";
+  vueApp.elementStyle.backgroundColor = colours.basegreen;
 });
 
 socket.on('elementOff', function(){
-  vueApp.elementStatus = "Element OFF";
-  vueApp.elementStyle.backgroundColor = colours.black;
+  vueApp.elementStatus = "OFF";
+  vueApp.elementStyle.backgroundColor = colours.basered;
 });
 
 // Pump Button Code ************************************************************
