@@ -36,7 +36,7 @@
           <p v-if="elementActive">element Active</p>
           <p v-else>element Not Active</p>
           <p> {{ outputPercent }} %</p>
-          <p> {{ elementStatus }} </p>
+          <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
         </div>
 
         <div id="chart" class="panel">

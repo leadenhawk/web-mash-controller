@@ -3,6 +3,7 @@ var colours = {
   black: 'black',
   pink: 'pink',
   green: 'green',
+  yellow: 'yellow',
   lightred: '#FF5C5C',
   basered: '#EB1C1C',
   midred: '#A40404',
@@ -68,6 +69,21 @@ darkblueButton.backgroundColor = colours.darkblue;
 var baseblueButton = shallowCopy(baseButton);
 baseblueButton.backgroundColor = colours.baseblue;
 
+// Element On/Off Style
+var elementOnStyleSet = {
+  display: 'inline-block',
+  borderRadius: '4px',
+  backgroundColor: colours.black,
+  border: 'none',
+  color: '#FFFFFF',
+  textAlign: 'center',
+  fontSize: '16px',
+  padding: '10px',
+  width: '150px',
+  transition: 'all 0.5s',
+  cursor: 'pointer',
+  margin: '5px'
+};
 
 // Vue code ********************************************************************
 var vueApp = new Vue({
@@ -94,7 +110,9 @@ var vueApp = new Vue({
     mashModeButtonStyle: basegreenButton,
     boilModeButtonStyle: darkredButton,
     chartButtonStyle: baseblueButton,
-    sendInputButtonStyle: baseblueButton
+    sendInputButtonStyle: baseblueButton,
+    elementStyle: elementOnStyleSet
+
   },
   methods: {
     // Pump On Button
