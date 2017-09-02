@@ -102,12 +102,29 @@ var tempStyleSet = {fontSize: "36px", borderRadius: '5px', backgroundColor: colo
 var inputStyleSet = {fontSize: "18px"};
 
 
-// test send update properties down socket
+// Send update properties down socket - so new sockets to connect get correct state of hardware
 setInterval(function() {
-  socket.emit('update', vueApp.mode);
+  if (vueApp.pumpStatus === 'Pump ON'){
+    vueApp.pumpOnClicked();
+  }
+  else if (vueApp.pumpStatus === 'Pump OFF'){
+    vueApp.pumpOffClicked();
+  };
+  if (vueApp.elementLiveStatus === 'Live'){
+    vueApp.elementLiveClicked();
+  }
+  else if (vueApp.elementLiveStatus === 'Not Live'){
+    vueApp.elementOffClicked();
+  };
+  if (vueApp.mode === "Mash"){
+    vueApp.mashMode();
+  }
+  else if (vueApp.mode === "Boil"){
+    vueApp.boilMode();
+  };
+
 }, 500);
 
-// socket.emit('update', vueApp.pumpStatus);
 
 
 // Vue code ********************************************************************
@@ -126,9 +143,7 @@ var vueApp = new Vue({
     elementActive: false,
     outputPerCent: 0,
     mode: "Mash",
-    // mash: true,
     elementStatus: "OFF",
-    buttonCol: 'red',
     pumpOnButtonStyle: darkblueButton,
     pumpOffButtonStyle: baseblueButton,
     elementLiveButtonStyle: darkblueButton,
@@ -139,10 +154,8 @@ var vueApp = new Vue({
     sendInputButtonStyle: baseblueButton,
     elementStyle: elementOnStyleSet,
     mashBoilStyle: mashBoilStyleSet,
-    // elementLiveYesStyle: elementLiveYesStyleSet,
-    // elementLiveNoStyle: elementLiveNoStyleSet,
-    elementLiveStyle: elementLiveStyleSet,                  // here
-    pumpStatusStyle: pumpStatusStyleSet,                    // here
+    elementLiveStyle: elementLiveStyleSet,
+    pumpStatusStyle: pumpStatusStyleSet,
     tempStyle: tempStyleSet,
     inputStyle: inputStyleSet
   },

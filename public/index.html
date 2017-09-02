@@ -35,7 +35,7 @@
           <p>outputIndicators</p>
 
           <p v-bind:style="elementLiveStyle"> {{ elementLiveStatus }} </p>
-          
+
           <!-- <p v-if="elementActive" v-bind:style="elementLiveYesStyle">Live</p> -->
           <!-- <p v-else v-bind:style="elementLiveNoStyle">Off</p> -->
 
@@ -57,7 +57,7 @@
           <button v-on:click="sendInputTemp" v-bind:style="sendInputButtonStyle">send to Arduino</button>
         </div>
 
-        <div id="mashOutput" class="panel">
+        <div v-if="mode == 'Mash'" id="mashOutput" class="panel">
           <p v-bind:style="tempStyle"> {{ temp }} °C</p>
           <p>mash-output</p>
         </div>
