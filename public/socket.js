@@ -69,3 +69,9 @@ socket.on('boilModeActive', function(){
   vueApp.changeBoilModeButtonStyle();
   vueApp.mode = "Boil";
 });
+
+
+// test update
+socket.on('update', function(param){
+   vueApp.mode = param;
+});

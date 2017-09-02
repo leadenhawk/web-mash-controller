@@ -92,6 +92,12 @@ io.on('connection', function(socket){
     io.sockets.emit('boilModeActive');
   });
 
+// test update properties on socket
+  socket.on('update', function(param){
+    console.log(param);
+    io.sockets.emit('update',param);
+  });
+
 });
 
 /*

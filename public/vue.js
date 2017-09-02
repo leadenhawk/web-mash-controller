@@ -101,6 +101,15 @@ pumpStatusStyleSet.backgroundColor = colours.basered;
 var tempStyleSet = {fontSize: "36px", borderRadius: '5px', backgroundColor: colours.bg,	width: '125px', padding: '6px 10px',	margin: '4px 0'};
 var inputStyleSet = {fontSize: "18px"};
 
+
+// test send update properties down socket
+setInterval(function() {
+  socket.emit('update', vueApp.mode);
+}, 500);
+
+// socket.emit('update', vueApp.pumpStatus);
+
+
 // Vue code ********************************************************************
 var vueApp = new Vue({
   el: '#vueApp',
