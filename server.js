@@ -44,36 +44,43 @@ io.on('connection', function(socket){
   //   event.emit('PBP');
   // });
 
-  socket.on('pumpOnButtonPressed',function() {
+  socket.on('pumpOnButtonPressed',function() {  //listen for pump on button press from the socket
     if ( DEBUG ) { console.log('Pump ON button pressed!') };
-    event.emit('turnPumpOn');
+    event.emit('turnPumpOn'); //emit turn pump on to J5
+    io.sockets.emit('pumpOnButtonPressed');//emit received message back down ALL sockets
   });
   socket.on('pumpOffButtonPressed',function() {
     if ( DEBUG ) { console.log('Pump OFF button pressed!') };
     event.emit('turnPumpOff');
+    io.sockets.emit('pumpOffButtonPressed');
   });
+
 
   socket.on('inputTempChanged', function(param){
     if ( DEBUG ) { console.log('Set temp is now ' + param +' deg C')};
     setTemp = param;
+    io.sockets.emit('inputTempChanged', param);
   });
   socket.on('inputPercentChanged', function(param){
     if ( DEBUG ) { console.log('Set output is now ' + param +' %')};
     manPercent = param;
+    io.sockets.emit('inputPercentChanged', param);
   });
 
 
-
-  socket.on('elementActive', function(param){
-    if ( DEBUG ) { console.log('Element Live: ' + param)};
+  socket.on('elementLivePressed', function(){
+    if ( DEBUG ) { console.log('Element Live')};
     elementState = 1;
+    io.sockets.emit('elementLivePressed');
   });
 
-  socket.on('elementOff', function(param){
-    if ( DEBUG ) { console.log('Element Live: ' + param)};
+  socket.on('elementOffPressed', function(){
+    if ( DEBUG ) { console.log('Element Not Live')};
     elementState = 0;
     event.emit('turnElementOff');
+    io.sockets.emit('elementOffPressed');
   });
+
 
   socket.on('mashModeActive', function(){
     inAuto = 1;

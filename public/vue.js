@@ -89,10 +89,12 @@ var elementOnStyleSet = shallowCopy(baseOutputStyle);
 elementOnStyleSet.backgroundColor = colours.basered;
 var mashBoilStyleSet = shallowCopy(baseOutputStyle);
 mashBoilStyleSet.backgroundColor = colours.basegreen;
-var elementLiveYesStyleSet = shallowCopy(baseOutputStyle);
-elementLiveYesStyleSet.backgroundColor = colours.basegreen;
-var elementLiveNoStyleSet = shallowCopy(baseOutputStyle);
-elementLiveNoStyleSet.backgroundColor = colours.basered;
+// var elementLiveYesStyleSet = shallowCopy(baseOutputStyle);
+// elementLiveYesStyleSet.backgroundColor = colours.basegreen;
+// var elementLiveNoStyleSet = shallowCopy(baseOutputStyle);
+// elementLiveNoStyleSet.backgroundColor = colours.basered;
+var elementLiveStyleSet = shallowCopy(baseOutputStyle);
+elementLiveStyleSet.backgroundColor = colours.basered;
 var pumpStatusStyleSet = shallowCopy(baseOutputStyle);
 pumpStatusStyleSet.backgroundColor = colours.basered;
 
@@ -107,14 +109,15 @@ var vueApp = new Vue({
     pumpStatus: 'Pump OFF',
     show: true,
     temp: "n/a",
-    inputTemp: 0,
+    inputTemp: "",
     sentInputTemp: 0,
-    inputPercent: 0,
+    inputPercent: "",
     sentInputPercent: 0,
+    elementLiveStatus: 'Not Live',
     elementActive: false,
     outputPerCent: 0,
     mode: "Mash",
-    mash: true,
+    // mash: true,
     elementStatus: "OFF",
     buttonCol: 'red',
     pumpOnButtonStyle: darkblueButton,
@@ -127,9 +130,10 @@ var vueApp = new Vue({
     sendInputButtonStyle: baseblueButton,
     elementStyle: elementOnStyleSet,
     mashBoilStyle: mashBoilStyleSet,
-    elementLiveYesStyle: elementLiveYesStyleSet,
-    elementLiveNoStyle: elementLiveNoStyleSet,
-    pumpStatusStyle: pumpStatusStyleSet,
+    // elementLiveYesStyle: elementLiveYesStyleSet,
+    // elementLiveNoStyle: elementLiveNoStyleSet,
+    elementLiveStyle: elementLiveStyleSet,                  // here
+    pumpStatusStyle: pumpStatusStyleSet,                    // here
     tempStyle: tempStyleSet,
     inputStyle: inputStyleSet
   },
@@ -137,74 +141,63 @@ var vueApp = new Vue({
     // Pump On Button
     pumpOnHandler(){
       this.pumpOnClicked();
-      this.changePumpOnButtonStyle();
+      // this.changePumpOnButtonStyle();
     },
     pumpOnClicked(){
-      this.pumpStatus = "Pump ON";
+      // this.pumpStatus = "Pump ON";
       socket.emit('pumpOnButtonPressed');
     },
     changePumpOnButtonStyle(){
       this.pumpOnButtonStyle = baseblueButton;
       this.pumpOffButtonStyle = darkblueButton;
       pumpStatusStyleSet.backgroundColor = colours.basegreen;
-
     },
 
     // Pump Off Button
     pumpOffHandler(){
       this.pumpOffClicked();
-      this.changePumpOffButtonStyle();
+      // this.changePumpOffButtonStyle();
     },
     pumpOffClicked(){
-      this.pumpStatus = "Pump OFF";
+      // this.pumpStatus = "Pump OFF";
       socket.emit('pumpOffButtonPressed');
-      pumpStatusStyleSet.backgroundColor = colours.basered;
+
     },
     changePumpOffButtonStyle(){
       this.pumpOnButtonStyle = darkblueButton;
       this.pumpOffButtonStyle = baseblueButton;
-
-
-    },
-
-    // Send temp to arduino button
-    sendInputTemp(){
-      socket.emit('inputTempChanged', this.inputTemp);
-      this.sentInputTemp = this.inputTemp;
-    },
-
-    // Send percent to arduino button
-    sendInputPercent(){
-      socket.emit('inputPercentChanged', this.inputPercent);
-      this.sentInputPercent = this.inputPercent;
+      pumpStatusStyleSet.backgroundColor = colours.basered;
     },
 
     //Element Live Button
     elementLiveHandler(){
-      this.elementLive();
-      this.changeElementLiveButtonStyle();
+      this.elementLiveClicked();
+      // this.changeElementLiveButtonStyle();
     },
-    elementLive(){
-      this.elementActive = true;
-      socket.emit("elementActive", this.elementActive);
+    elementLiveClicked(){
+      // this.elementActive = true;
+      // socket.emit("elementActive", this.elementActive);
+      socket.emit("elementLivePressed");
     },
     changeElementLiveButtonStyle(){
       this.elementLiveButtonStyle = baseblueButton;
       this.elementOffButtonStyle = darkblueButton;
+      elementLiveStyleSet.backgroundColor = colours.basegreen;
     },
 
     // Element Off Button
     elementOffHandler(){
-      this.elementOff();
-      this.changeElementOffButtonStyle();
+      this.elementOffClicked();
+      // this.changeElementOffButtonStyle();
     },
-    elementOff(){
-      this.elementActive = false;
-      socket.emit("elementOff", this.elementActive);
+    elementOffClicked(){
+      // this.elementActive = false;
+      socket.emit("elementOffPressed", this.elementActive);
     },
     changeElementOffButtonStyle(){
       this.elementOffButtonStyle = baseblueButton;
       this.elementLiveButtonStyle = darkblueButton;
+      elementLiveStyleSet.backgroundColor = colours.basered;
     },
 
     // Mash Mode Button
@@ -213,7 +206,7 @@ var vueApp = new Vue({
       this.changeMashModeButtonStyle();
     },
     mashMode(){
-      this.mash = true;
+      // this.mash = true;
       this.mode = "Mash";
       socket.emit("mashModeActive")
     },
@@ -229,7 +222,7 @@ var vueApp = new Vue({
       this.changeBoilModeButtonStyle();
     },
     boilMode: function(){
-      this.mash = false;
+      // this.mash = false;
       this.mode = "Boil";
       socket.emit("boilModeActive")
     },
@@ -237,6 +230,18 @@ var vueApp = new Vue({
       this.mashModeButtonStyle = darkblueButton;
       this.boilModeButtonStyle = baseblueButton;
       mashBoilStyleSet.backgroundColor = colours.basered;
+    },
+
+    // Send temp to arduino button
+    sendInputTemp(){
+      socket.emit('inputTempChanged', this.inputTemp);
+      // this.sentInputTemp = this.inputTemp;
+    },
+
+    // Send percent to arduino button
+    sendInputPercent(){
+      socket.emit('inputPercentChanged', this.inputPercent);
+      // this.sentInputPercent = this.inputPercent;
     }
   }
 });

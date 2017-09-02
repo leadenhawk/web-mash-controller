@@ -33,8 +33,12 @@
 
         <div id="outputIndicators" class="panel">
           <p>outputIndicators</p>
-          <p v-if="elementActive" v-bind:style="elementLiveYesStyle">Live</p>
-          <p v-else v-bind:style="elementLiveNoStyle">Off</p>
+
+          <p v-bind:style="elementLiveStyle"> {{ elementLiveStatus }} </p>
+          
+          <!-- <p v-if="elementActive" v-bind:style="elementLiveYesStyle">Live</p> -->
+          <!-- <p v-else v-bind:style="elementLiveNoStyle">Off</p> -->
+
           <p v-bind:style="tempStyle"> {{ outputPercent }} %</p>
           <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
         </div>
@@ -49,7 +53,7 @@
         <div id="mashInput" class="panel">
           <p>mash input</p>
           <p v-bind:style="inputStyle"> {{ sentInputTemp + ' °C' }}</p>
-          <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp" min="0" max="100" step="0.1"/>
+          <input v-model="inputTemp" type="number" v-on:keyup.enter="sendInputTemp" min="0" max="100" step="0.1" placeholder="-"/>
           <button v-on:click="sendInputTemp" v-bind:style="sendInputButtonStyle">send to Arduino</button>
         </div>
 
@@ -61,7 +65,7 @@
         <div id="boilInput" class="panel">
           <p>boil-input</p>
           <p v-bind:style="inputStyle"> {{ sentInputPercent + ' %'}} </p>
-          <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent" min="0" max="100" step="0.1"/>
+          <input v-model="inputPercent" type="number" v-on:keyup.enter="sendInputPercent" min="0" max="100" step="0.1" placeholder="-"/>
           <button v-on:click="sendInputPercent" v-bind:style="sendInputButtonStyle">send to Arduino</button>
         </div>
 
