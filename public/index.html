@@ -6,6 +6,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
     <title>Mash Control</title>
     <link href="/styles.css" rel="stylesheet" />
@@ -21,6 +22,8 @@
         <div id="banner" class="panel">
           <h1 style="text-align: center">Nathan's Controller</h1>
         </div>
+
+        <canvas id="myChart" ></canvas>
 
         <div id="initilise" class="panel" v-if="!initialised">
           <button v-on:click="initialiseClicked" v-bind:style="initiliseButtonStyle">Initialise</button>
@@ -44,11 +47,10 @@
           <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
         </div>
 
+
+
         <div id="chart" class="panel" v-if="initialised">
           <p class="box-heading">chart</p>
-          <!-- <button v-on:click="show = !show" v-bind:style="chartButtonStyle">Show/Hide</button> -->
-          <!-- <p v-if="show">I'm part time visible</p> -->
-          <!-- <p v-else>Am I visible?</p> -->
         </div>
 
         <div id="Input" class="panel" v-if="initialised">
@@ -89,5 +91,6 @@
 
     <script src="/socket.js"></script>
     <script src="/vue.js"></script>
+    <script src="/chartjs.js"></script>
   </body>
 </html>
