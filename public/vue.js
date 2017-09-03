@@ -1,3 +1,8 @@
+// Vue.filter('dp2', function(value) {
+//   return value.toFixed(2);// thing to transform
+// });
+
+
 // Defines Colours
 var colours = {
   black: 'black',
@@ -245,5 +250,10 @@ var vueApp = new Vue({
       this.initialised = true;
       socket.emit('initilise');
     }
-  }
+  }/*,
+  filters: {
+    dp2(value) {
+      return (value).toFixed(2)
+    }
+  }*/
 });

@@ -234,30 +234,31 @@ board.on("ready", function() {
        var timeChange = now - lastTime;
        if ( timeChange >= SampleTime ) {
 
-         // Compute all the working error variables
-         var error = Setpoint - Input;
-         var dInput = (Input - lastInput);
+        // Compute all the working error variables
+        var error = Setpoint - Input;
+        var dInput = (Input - lastInput);
 
-         // Compute I Output
-         outputSum += (ki * error);
+        // Compute I Output
+        outputSum += (ki * error);
 
-         // Compute P Output
-         outputSum -= kp * dInput;
-         if ( outputSum > outMax ) { outputSum = outMax; }
-         else if ( outputSum < outMin ) { outputSum = outMin; }
+        // Compute P Output
+        outputSum -= kp * dInput;
+        if ( outputSum > outMax ) { outputSum = outMax; }
+        else if ( outputSum < outMin ) { outputSum = outMin; }
 
-         // Compute D Output and sum PID Output
-         Output = outputSum - kd * dInput;
-         //console.log("Output: ", Output);
-         if ( Output > outMax ) { Output = outMax; }
-         else if ( Output < outMin ) { Output = outMin; }
+        // Compute D Output and sum PID Output
+        Output = outputSum - kd * dInput;
+        //console.log("Output: ", Output);
+        if ( Output > outMax ) { Output = outMax; }
+        else if ( Output < outMin ) { Output = outMin; }
 
-         var outputPercent = ((Output / WindowSize)*100);
-         io.sockets.emit('outputUpdate', outputPercent);
+        var outputPercent = ((Output / WindowSize)*100);
+        outputPercent = outputPercent.toFixed(0);
+        io.sockets.emit('outputUpdate', outputPercent);
 
-         //Remember some variables for next time
-         lastInput = Input;
-         lastTime = now;
+        //Remember some variables for next time
+        lastInput = Input;
+        lastTime = now;
        }
      }
    }
