@@ -27,7 +27,7 @@ body {
 body{
   color: var(--fontcolour);
   background-color: var(--backgroundcolour);
-  font-size: 12px;
+  font-size: 14px;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -41,6 +41,12 @@ input[type=number] {
 	box-sizing: border-box;
 	border: 2px solid var(--backgroundcolour);
 	border-radius: 5px;
+}
+
+.box-heading{
+	text-align: center;
+	margin: 0px;
+	padding: 0px
 }
 
 .panel{
@@ -67,18 +73,8 @@ input[type=number] {
 
 }
 
-#mashInput{
-	grid-area: mashIn;
-
-}
-
-#mashOutput{
-	grid-area: mashOut;
-
-}
-
-#boilInput{
-	grid-area: boilIn;
+#Input{
+	grid-area: input;
 
 }
 

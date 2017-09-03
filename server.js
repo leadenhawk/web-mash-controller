@@ -92,6 +92,15 @@ io.on('connection', function(socket){
     io.sockets.emit('boilModeActive');
   });
 
+  socket.on('updateTemp', function(param){
+    //console.log(param);
+    io.sockets.emit('updateTemp',param);
+  });
+  socket.on('updatePercent', function(param){
+    //console.log(param);
+    io.sockets.emit('updatePercent',param);
+  });
+
 });
 
 /*

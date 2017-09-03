@@ -69,3 +69,10 @@ socket.on('boilModeActive', function(){
   vueApp.changeBoilModeButtonStyle();
   vueApp.mode = "Boil";
 });
+
+socket.on('updateTemp', function(param){
+  vueApp.sentInputTemp = param;
+});
+socket.on('updatePercent', function(param){
+  vueApp.sentInputPercent = param;
+});

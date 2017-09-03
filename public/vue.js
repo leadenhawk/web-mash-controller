@@ -31,7 +31,7 @@ var baseButton = {
   textAlign: 'center',
   fontSize: '16px',
   padding: '10px',
-  width: '150px',
+  width: '80px',
   transition: 'all 0.75s',
   cursor: 'pointer',
   margin: '5px'
@@ -98,11 +98,11 @@ elementLiveStyleSet.backgroundColor = colours.basered;
 var pumpStatusStyleSet = shallowCopy(baseOutputStyle);
 pumpStatusStyleSet.backgroundColor = colours.basered;
 
-var tempStyleSet = {fontSize: "36px", borderRadius: '5px', backgroundColor: colours.bg,	width: '125px', padding: '6px 10px',	margin: '4px 0'};
+var tempStyleSet = {fontSize: "26px", borderRadius: '5px', backgroundColor: colours.bg,	width: '100px', padding: '6px 10px',	margin: '4px 0'};
 var inputStyleSet = {fontSize: "18px"};
 
 
-// Send update properties down socket - so new sockets to connect get correct state of hardware
+//Send update properties down socket - so new sockets to connect get correct state of hardware
 setInterval(function() {
   if (vueApp.pumpStatus === 'Pump ON'){
     vueApp.pumpOnClicked();
@@ -122,9 +122,12 @@ setInterval(function() {
   else if (vueApp.mode === "Boil"){
     vueApp.boilMode();
   };
-
 }, 500);
 
+setInterval(function() {
+  socket.emit('updateTemp', vueApp.sentInputTemp);
+  socket.emit('updatePercent', vueApp.sentInputPercent);
+}, 500);
 
 
 // Vue code ********************************************************************
@@ -161,10 +164,10 @@ var vueApp = new Vue({
   },
   methods: {
     // Pump On Button
-    pumpOnHandler(){
-      this.pumpOnClicked();
-      // this.changePumpOnButtonStyle();
-    },
+    // pumpOnHandler(){
+    //   this.pumpOnClicked();
+    //   // this.changePumpOnButtonStyle();
+    // },
     pumpOnClicked(){
       // this.pumpStatus = "Pump ON";
       socket.emit('pumpOnButtonPressed');
@@ -176,10 +179,10 @@ var vueApp = new Vue({
     },
 
     // Pump Off Button
-    pumpOffHandler(){
-      this.pumpOffClicked();
-      // this.changePumpOffButtonStyle();
-    },
+    // pumpOffHandler(){
+    //   this.pumpOffClicked();
+    //   // this.changePumpOffButtonStyle();
+    // },
     pumpOffClicked(){
       // this.pumpStatus = "Pump OFF";
       socket.emit('pumpOffButtonPressed');
@@ -192,10 +195,10 @@ var vueApp = new Vue({
     },
 
     //Element Live Button
-    elementLiveHandler(){
-      this.elementLiveClicked();
-      // this.changeElementLiveButtonStyle();
-    },
+    // elementLiveHandler(){
+    //   this.elementLiveClicked();
+    //   // this.changeElementLiveButtonStyle();
+    // },
     elementLiveClicked(){
       // this.elementActive = true;
       // socket.emit("elementActive", this.elementActive);
@@ -208,10 +211,10 @@ var vueApp = new Vue({
     },
 
     // Element Off Button
-    elementOffHandler(){
-      this.elementOffClicked();
-      // this.changeElementOffButtonStyle();
-    },
+    // elementOffHandler(){
+    //   this.elementOffClicked();
+    //   // this.changeElementOffButtonStyle();
+    // },
     elementOffClicked(){
       // this.elementActive = false;
       socket.emit("elementOffPressed", this.elementActive);
