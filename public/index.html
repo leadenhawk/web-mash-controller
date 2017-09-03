@@ -20,42 +20,38 @@
 
         <div id="banner" class="panel">
           <h1 style="text-align: center">Nathan's Controller</h1>
-          <button v-if="!initialised" v-on:click="initialiseClicked">Initialise</button>
         </div>
 
-        <div id="mode-selector" class="panel">
+        <div id="initilise" class="panel" v-if="!initialised">
+          <button v-on:click="initialiseClicked" v-bind:style="initiliseButtonStyle">Initialise</button>
+        </div>
+
+        <div id="mode-selector" class="panel" v-if="initialised">
           <p class="box-heading">Selectors</p>
-
-
-
           <p v-bind:style="mashBoilStyle">{{ mode }} </p>
-          <button v-on:click="mashModeHandler" v-bind:style="mashModeButtonStyle">Mash</button>
-          <button v-on:click="boilModeHandler" v-bind:style="boilModeButtonStyle">Boil</button>
-
+          <button v-on:click="mashMode" v-bind:style="mashModeButtonStyle">Mash</button>
+          <button v-on:click="boilMode" v-bind:style="boilModeButtonStyle">Boil</button>
           <p v-bind:style="elementLiveStyle"> {{ elementLiveStatus }} </p>
           <button v-on:click='elementLiveClicked' v-bind:style="elementLiveButtonStyle">Live</button>
           <button v-on:click='elementOffClicked' v-bind:style="elementOffButtonStyle">OFF</button>
         </div>
 
-        <div id="outputIndicators" class="panel">
+        <div id="outputIndicators" class="panel" v-if="initialised">
           <p class="box-heading">outputIndicators</p>
-
           <p v-if="mode == 'Mash'" v-bind:style="tempStyle"> {{ temp }} °C</p>
           <p v-if="mode == 'Boil'" v-bind:style="tempStyle"> n/a °C</p>
-
           <p v-bind:style="tempStyle"> {{ outputPercent }} %</p>
-
           <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
         </div>
 
-        <div id="chart" class="panel">
+        <div id="chart" class="panel" v-if="initialised">
           <p class="box-heading">chart</p>
           <!-- <button v-on:click="show = !show" v-bind:style="chartButtonStyle">Show/Hide</button> -->
           <!-- <p v-if="show">I'm part time visible</p> -->
           <!-- <p v-else>Am I visible?</p> -->
         </div>
 
-        <div id="Input" class="panel">
+        <div id="Input" class="panel" v-if="initialised">
           <div id="mashInput" v-if="mode == 'Mash'">
             <p class="box-heading">Set Temperature</p>
             <p v-bind:style="tempStyle"> {{ sentInputTemp + ' °C' }}</p>
@@ -70,13 +66,13 @@
           </div>
         </div>
 
-        <div id="controlValues" class="panel">
+        <div id="controlValues" class="panel" v-if="initialised">
           <p class="box-heading">Control Values</p>
           <!-- <button v-on:click="counter += 1">Add 1</button> -->
           <!-- <p>The button above has been clicked {{ counter }} times.</p> -->
         </div>
 
-        <div id="pump" class="panel">
+        <div id="pump" class="panel" v-if="initialised">
           <p class="box-heading">Pump Control</p>
           <button v-on:click="pumpOnClicked" v-bind:style="pumpOnButtonStyle">ON</button>
           <button v-on:click="pumpOffClicked" v-bind:style="pumpOffButtonStyle">OFF</button>
@@ -84,6 +80,7 @@
         </div>
 
         <div id="footer" class="panel">
+          <p>footer</p>
         </div>
 
       </div>

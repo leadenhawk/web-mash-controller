@@ -102,35 +102,6 @@ var tempStyleSet = {fontSize: "26px", borderRadius: '5px', backgroundColor: colo
 var inputStyleSet = {fontSize: "18px"};
 
 
-//CHANGE THIS TO INITIAL SYNC BUTTON - NOT ON INTERVAL
-//Send update properties down socket - so new sockets to connect get correct state of hardware
-// setInterval(function() {
-//   if (vueApp.pumpStatus === 'Pump ON'){
-//     vueApp.pumpOnClicked();
-//   }
-//   else if (vueApp.pumpStatus === 'Pump OFF'){
-//     vueApp.pumpOffClicked();
-//   };
-//   if (vueApp.elementLiveStatus === 'Live'){
-//     vueApp.elementLiveClicked();
-//   }
-//   else if (vueApp.elementLiveStatus === 'Not Live'){
-//     vueApp.elementOffClicked();
-//   };
-//   if (vueApp.mode === "Mash"){
-//     vueApp.mashMode();
-//   }
-//   else if (vueApp.mode === "Boil"){
-//     vueApp.boilMode();
-//   };
-// }, 500);
-//
-// setInterval(function() {
-//   socket.emit('updateTemp', vueApp.sentInputTemp);
-//   socket.emit('updatePercent', vueApp.sentInputPercent);
-// }, 500);
-
-
 // Vue code ********************************************************************
 var vueApp = new Vue({
   el: '#vueApp',
@@ -162,7 +133,8 @@ var vueApp = new Vue({
     pumpStatusStyle: pumpStatusStyleSet,
     tempStyle: tempStyleSet,
     inputStyle: inputStyleSet,
-    initialised: false
+    initialised: false,
+    initiliseButtonStyle: baseblueButton
   },
   methods: {
     // Pump On Button
@@ -228,10 +200,10 @@ var vueApp = new Vue({
     },
 
     // Mash Mode Button
-    mashModeHandler(){
-      this.mashMode();
+    // mashModeHandler(){
+    //   this.mashMode();
       // this.changeMashModeButtonStyle();
-    },
+    // },
     mashMode(){
       // this.mode = "Mash";
       socket.emit("mashModeActive")
@@ -243,10 +215,10 @@ var vueApp = new Vue({
     },
 
     // Boil Mode Button
-    boilModeHandler(){
-      this.boilMode();
+    // boilModeHandler(){
+    //   this.boilMode();
       // this.changeBoilModeButtonStyle();
-    },
+    // },
     boilMode: function(){
       // this.mode = "Boil";
       socket.emit("boilModeActive")
@@ -271,26 +243,7 @@ var vueApp = new Vue({
 
     initialiseClicked(){
       this.initialised = true;
-      if (vueApp.pumpStatus === 'Pump ON'){
-        vueApp.pumpOnClicked();
-      }
-      else if (vueApp.pumpStatus === 'Pump OFF'){
-        vueApp.pumpOffClicked();
-      };
-      if (vueApp.elementLiveStatus === 'Live'){
-        vueApp.elementLiveClicked();
-      }
-      else if (vueApp.elementLiveStatus === 'Not Live'){
-        vueApp.elementOffClicked();
-      };
-      if (vueApp.mode === "Mash"){
-        vueApp.mashMode();
-      }
-      else if (vueApp.mode === "Boil"){
-        vueApp.boilMode();
-      };
-      socket.emit('updateTemp', vueApp.sentInputTemp);
-      socket.emit('updatePercent', vueApp.sentInputPercent);
+      socket.emit('initilise');
     }
   }
 });

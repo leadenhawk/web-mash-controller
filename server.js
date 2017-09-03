@@ -17,6 +17,7 @@ var setTemp = 0;
 var manPercent = 0;
 var elementState = 0;
 var inAuto = 1;
+var pumpState = 0;
 
 // Setup JS event emitter
 var event = new EventEmitter();
@@ -92,13 +93,28 @@ io.on('connection', function(socket){
     io.sockets.emit('boilModeActive');
   });
 
-  socket.on('updateTemp', function(param){
-    //console.log(param);
-    io.sockets.emit('updateTemp',param);
-  });
-  socket.on('updatePercent', function(param){
-    //console.log(param);
-    io.sockets.emit('updatePercent',param);
+  // Initilise all sockets with current hardware states
+  socket.on('initilise', function(){
+    if (inAuto === 1){
+      io.sockets.emit('mashModeActive');
+    }
+    else if (inAuto === 0){
+      io.sockets.emit('boilModeActive');
+    };
+    if (elementState === 1){
+      io.sockets.emit('elementLivePressed');
+    }
+    else if (elementState === 0){
+      io.sockets.emit('elementOffPressed');
+    };
+    if (pumpState === 1){
+      io.sockets.emit('pumpOnButtonPressed');
+    }
+    else if (pumpState === 0){
+      io.sockets.emit('pumpOffButtonPressed');
+    };
+    io.sockets.emit('inputTempChanged', setTemp);
+    io.sockets.emit('inputPercentChanged', manPercent);
   });
 
 });
@@ -150,10 +166,12 @@ board.on("ready", function() {
   //   }
   // });
   event.on('turnPumpOn', function(){
+    pumpState = 1;
     led.on();
     if ( DEBUG ) { console.log('turn on pump') };
   });
   event.on('turnPumpOff', function(){
+    pumpState = 0;
     led.off();
     if ( DEBUG ) { console.log('turn off pump') };
   });
@@ -316,6 +334,7 @@ board.on("ready", function() {
        event.emit('turnElementOff');
      }
    }, SampleTime);
+
 
 
 });

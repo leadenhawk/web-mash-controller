@@ -1,5 +1,5 @@
 // Create front-end socket connection
-var socket = io.connect('http://192.168.1.67:4000');
+var socket = io.connect('http://192.168.1.71:4000');
 
 // Display actual temperature **************************************************
 socket.on('tempChange', function(temp){
