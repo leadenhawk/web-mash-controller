@@ -20,10 +20,14 @@
 
         <div id="banner" class="panel">
           <h1 style="text-align: center">Nathan's Controller</h1>
+          <button v-if="!initialised" v-on:click="initialiseClicked">Initialise</button>
         </div>
 
         <div id="mode-selector" class="panel">
           <p class="box-heading">Selectors</p>
+
+
+
           <p v-bind:style="mashBoilStyle">{{ mode }} </p>
           <button v-on:click="mashModeHandler" v-bind:style="mashModeButtonStyle">Mash</button>
           <button v-on:click="boilModeHandler" v-bind:style="boilModeButtonStyle">Boil</button>

@@ -102,32 +102,33 @@ var tempStyleSet = {fontSize: "26px", borderRadius: '5px', backgroundColor: colo
 var inputStyleSet = {fontSize: "18px"};
 
 
+//CHANGE THIS TO INITIAL SYNC BUTTON - NOT ON INTERVAL
 //Send update properties down socket - so new sockets to connect get correct state of hardware
-setInterval(function() {
-  if (vueApp.pumpStatus === 'Pump ON'){
-    vueApp.pumpOnClicked();
-  }
-  else if (vueApp.pumpStatus === 'Pump OFF'){
-    vueApp.pumpOffClicked();
-  };
-  if (vueApp.elementLiveStatus === 'Live'){
-    vueApp.elementLiveClicked();
-  }
-  else if (vueApp.elementLiveStatus === 'Not Live'){
-    vueApp.elementOffClicked();
-  };
-  if (vueApp.mode === "Mash"){
-    vueApp.mashMode();
-  }
-  else if (vueApp.mode === "Boil"){
-    vueApp.boilMode();
-  };
-}, 500);
-
-setInterval(function() {
-  socket.emit('updateTemp', vueApp.sentInputTemp);
-  socket.emit('updatePercent', vueApp.sentInputPercent);
-}, 500);
+// setInterval(function() {
+//   if (vueApp.pumpStatus === 'Pump ON'){
+//     vueApp.pumpOnClicked();
+//   }
+//   else if (vueApp.pumpStatus === 'Pump OFF'){
+//     vueApp.pumpOffClicked();
+//   };
+//   if (vueApp.elementLiveStatus === 'Live'){
+//     vueApp.elementLiveClicked();
+//   }
+//   else if (vueApp.elementLiveStatus === 'Not Live'){
+//     vueApp.elementOffClicked();
+//   };
+//   if (vueApp.mode === "Mash"){
+//     vueApp.mashMode();
+//   }
+//   else if (vueApp.mode === "Boil"){
+//     vueApp.boilMode();
+//   };
+// }, 500);
+//
+// setInterval(function() {
+//   socket.emit('updateTemp', vueApp.sentInputTemp);
+//   socket.emit('updatePercent', vueApp.sentInputPercent);
+// }, 500);
 
 
 // Vue code ********************************************************************
@@ -160,7 +161,8 @@ var vueApp = new Vue({
     elementLiveStyle: elementLiveStyleSet,
     pumpStatusStyle: pumpStatusStyleSet,
     tempStyle: tempStyleSet,
-    inputStyle: inputStyleSet
+    inputStyle: inputStyleSet,
+    initialised: false
   },
   methods: {
     // Pump On Button
@@ -265,6 +267,30 @@ var vueApp = new Vue({
     sendInputPercent(){
       socket.emit('inputPercentChanged', this.inputPercent);
       // this.sentInputPercent = this.inputPercent;
+    },
+
+    initialiseClicked(){
+      this.initialised = true;
+      if (vueApp.pumpStatus === 'Pump ON'){
+        vueApp.pumpOnClicked();
+      }
+      else if (vueApp.pumpStatus === 'Pump OFF'){
+        vueApp.pumpOffClicked();
+      };
+      if (vueApp.elementLiveStatus === 'Live'){
+        vueApp.elementLiveClicked();
+      }
+      else if (vueApp.elementLiveStatus === 'Not Live'){
+        vueApp.elementOffClicked();
+      };
+      if (vueApp.mode === "Mash"){
+        vueApp.mashMode();
+      }
+      else if (vueApp.mode === "Boil"){
+        vueApp.boilMode();
+      };
+      socket.emit('updateTemp', vueApp.sentInputTemp);
+      socket.emit('updatePercent', vueApp.sentInputPercent);
     }
   }
 });
