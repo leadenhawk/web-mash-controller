@@ -7,6 +7,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.full.min.js"></script>
 
     <title>Mash Control</title>
     <link href="/styles.css" rel="stylesheet" />
@@ -23,7 +24,7 @@
           <h1 style="text-align: center">Nathan's Controller</h1>
         </div>
 
-        <canvas id="myChart" ></canvas>
+        <!-- <canvas id="myChart" ></canvas> -->
 
         <div id="initilise" class="panel" v-if="!initialised">
           <button v-on:click="initialiseClicked" v-bind:style="initiliseButtonStyle">Initialise</button>
@@ -47,11 +48,11 @@
           <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
         </div>
 
+        <line-chart id="chart" class="panel" v-if="initialised"></line-chart>
 
-
-        <div id="chart" class="panel" v-if="initialised">
-          <p class="box-heading">chart</p>
-        </div>
+        <!-- <div id="chart" class="panel" v-if="initialised"> -->
+          <!-- <p class="box-heading">chart</p> -->
+        <!-- </div> -->
 
         <div id="Input" class="panel" v-if="initialised">
           <div id="mashInput" v-if="mode == 'Mash'">
