@@ -1,5 +1,5 @@
 
-{
+
   var ctx = document.getElementById('myChart').getContext('2d');
 
   var chartStart = false;
@@ -19,14 +19,15 @@
   setInterval(function() {
     if (chartStart === true){
       // get current time
-      var date = new Date();
-      var s = date.getSeconds().toString();
-      var m = date.getMinutes().toString();
-      var h = date.getHours().toString();
-      var time = h.concat(":").concat(m).concat(":").concat(s);
+      // var date = new Date();
+      // var s = date.getSeconds().toString();
+      // var m = date.getMinutes().toString();
+      // var h = date.getHours().toString();
+      // var time = h.concat(":").concat(m).concat(":").concat(s);
 
       // add current time to chart's label array
-      chartTimeLabels.push(time);
+      // chartTimeLabels.push(time);
+      chartTimeLabels.push(vueApp.timeNow);
 
       chartActualTempData.push(vueApp.temp);
       chartSetTempData.push(vueApp.sentInputTemp);
@@ -111,4 +112,3 @@
     }
 
   });
-}

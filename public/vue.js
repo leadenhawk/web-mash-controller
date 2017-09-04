@@ -184,7 +184,8 @@ var vueApp = new Vue({
     tempStyle: tempStyleSet,
     inputStyle: inputStyleSet,
     initialised: false,
-    initiliseButtonStyle: baseblueButton
+    initiliseButtonStyle: baseblueButton,
+    timeNow: "xx:xx:xx"
   },
   methods: {
     // Pump On Button
@@ -295,11 +296,29 @@ var vueApp = new Vue({
       this.initialised = true;
       socket.emit('initilise');
 
+    },
+
+    getTimeNow: function(){
+      this.intervalid1 = setInterval(() => {
+        var date = new Date();
+        var s = date.getSeconds().toString();
+        if (s < 10 ){
+          s = "0"+s;
+        }
+        var m = date.getMinutes().toString();
+        if (m < 10 ){
+          m = "0"+m;
+        }
+        var h = date.getHours().toString();
+        if (h < 10 ){
+          h = "0"+h;
+        }
+        this.timeNow = h.concat(":").concat(m).concat(":").concat(s);
+        // alert(this.timeNow);
+      }, 1000);
     }
-  }/*,
-  filters: {
-    dp2(value) {
-      return (value).toFixed(2)
-    }
-  }*/
+  },
+  mounted : function(){
+    this.getTimeNow()
+  }
 });

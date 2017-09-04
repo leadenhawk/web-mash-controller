@@ -22,6 +22,7 @@
 
         <div id="banner" class="panel">
           <h1 style="text-align: center">Nathan's Controller</h1>
+          <p>{{timeNow}}</p>
         </div>
 
         <div id="outputIndicators" class="panel" v-if="initialised">
@@ -82,11 +83,12 @@
 
         <div>
           <!-- <button onclick="setTimeout(myFunction, 3000);">Try it</button> -->
-          <button id="chartStartButton" onclick="startChartFunction();">Start Charting</button>
+
 
           <!-- <button onclick="runPauseChartFunction();">Run/Pause Chart</button> -->
 
           <canvas id="myChart"></canvas>
+          <button id="chartStartButton" onclick="startChartFunction();" v-bind:style="sendInputButtonStyle">Plot</button>
         </div>
         <!-- <div id="footer" class="panel">
           <p>footer</p>
