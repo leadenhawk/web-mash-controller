@@ -19,8 +19,8 @@ var elementState = 0;
 var inAuto = 1;
 var pumpState = 0;
 
-var Kp = 0, Ki = 75, Kd = 7500;
-var WindowSize = 10000;
+// var Kp = 0, Ki = 75, Kd = 7500;
+// var WindowSize = 10000;
 
 // Setup JS event emitter
 var event = new EventEmitter();
@@ -120,10 +120,10 @@ io.on('connection', function(socket){
     io.sockets.emit('inputPercentChanged', manPercent);
 
     // PID values
-    io.sockets.emit('PValue',Kp);
-    io.sockets.emit('IValue',Ki);
-    io.sockets.emit('DValue',Kd);
-    io.sockets.emit('windowSizeValue',WindowSize);
+    // io.sockets.emit('PValue',Kp);
+    // io.sockets.emit('IValue',Ki);
+    // io.sockets.emit('DValue',Kd);
+    // io.sockets.emit('windowSizeValue',WindowSize);
   });
 
 });
@@ -219,6 +219,9 @@ board.on("ready", function() {
   var SampleTime;
   var outMin, outMax;
   var pTerm = 0;
+  var Kp = 0, Ki = 75, Kd = 7500;
+  var WindowSize = 10000;
+
 
 
 
@@ -285,6 +288,12 @@ board.on("ready", function() {
     kp = Kp;
     ki = Ki * SampleTimeInSec;
     kd = Kd / SampleTimeInSec;
+
+    io.sockets.emit('PValue',Kp);
+    io.sockets.emit('IValue',Ki);
+    io.sockets.emit('DValue',Kd);
+    io.sockets.emit('windowSizeValue',WindowSize);
+
   }
 
   var NewSampleTime;
