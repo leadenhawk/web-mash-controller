@@ -22,7 +22,6 @@
 
         <div id="banner" class="panel">
           <h1 style="text-align: center">Nathan's Controller</h1>
-          <p>{{timeNow}}</p>
         </div>
 
         <div id="outputIndicators" class="panel" v-if="initialised">
@@ -81,7 +80,23 @@
           <p v-bind:style="pumpStatusStyle"> {{ pumpStatus }}</p>
         </div>
 
-        <div>
+        <div class="panel" v-if="initialised">
+          <p>Current time is {{timeNow}}</p>
+          <button v-on:click="startCountdown">Start</button>
+          <input v-model="temp1" type="number" placeholder="temp" style="width: 100px">
+          <input v-model="time1" type="number" placeholder="time" style="width: 100px">
+          <p>{{temp1}}{{time1}}</p>
+          <hr />
+          <input v-model="temp2" type="number" placeholder="temp" style="width: 100px">
+          <input v-model="time2" type="number" placeholder="time" style="width: 100px">
+          <p>{{temp2}}{{time2}}</p>
+          <hr />
+          <input v-model="temp3" type="number" placeholder="temp" style="width: 100px">
+          <input v-model="time3" type="number" placeholder="time" style="width: 100px">
+          <p>{{temp3}}{{time3}}</p>
+        </div>
+
+        <div class="panel">
           <!-- <button onclick="setTimeout(myFunction, 3000);">Try it</button> -->
 
 
@@ -98,9 +113,9 @@
 
     </div>
 
-
     <script src="/socket.js"></script>
     <script src="/vue.js"></script>
     <script src="/chartjs.js"></script>
+
   </body>
 </html>

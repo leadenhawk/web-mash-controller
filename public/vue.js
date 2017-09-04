@@ -185,7 +185,13 @@ var vueApp = new Vue({
     inputStyle: inputStyleSet,
     initialised: false,
     initiliseButtonStyle: baseblueButton,
-    timeNow: "xx:xx:xx"
+    timeNow: "xx:xx:xx",
+    temp1: "",
+    time1: "",
+    temp2: "",
+    time2: "",
+    temp3: "",
+    time3: ""
   },
   methods: {
     // Pump On Button
@@ -316,9 +322,15 @@ var vueApp = new Vue({
         this.timeNow = h.concat(":").concat(m).concat(":").concat(s);
         // alert(this.timeNow);
       }, 1000);
+    },
+    startCountdown: function(){
+      this.intervalid2 = setInterval(() => {
+        this.time1--;
+      }, 1000);
     }
   },
   mounted : function(){
-    this.getTimeNow()
+    this.getTimeNow();
+
   }
 });
