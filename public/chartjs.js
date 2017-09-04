@@ -48,16 +48,16 @@
       labels: chartTimeLabels,//["January", "February", "March"],
       datasets: [{
         label: "Actual Temp",
-        backgroundColor: colours.lightgreen,
+        backgroundColor: colours.basegreen,
         borderColor: colours.basegreen,
         data: chartActualTempData,//[0, 10, 5],
         fill: false,
         yAxisID: "y-axis-1",
-        radius: 0
+        radius: 0,
       },{
         label: "Set Temp",
-        backgroundColor: colours.lightblue,
-        borderColor: colours.baseblue,
+        backgroundColor: colours.basered,
+        borderColor: colours.basered,
         borderDash: [5],
         data: chartSetTempData,
         fill: false,
@@ -83,11 +83,19 @@
           display: true,
           position: "left",
           id: "y-axis-1",
-        }/*, {
+          scaleLabel: {
+            display: true,
+            labelString: 'Temperature (°C)'
+          },
+        },/* {
           type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
           display: true,
           position: "right",
           id: "y-axis-2",
+          scaleLabel: {
+            display: true,
+            labelString: 'Output (%)'
+          },
           // grid line settings
           gridLines: {
               drawOnChartArea: false, // only want the grid lines for one axis to show up
