@@ -396,7 +396,7 @@ var vueApp = new Vue({
           if (this.secs === 0){
             this.mins--;
 
-            this.secs = 10;
+            this.secs = 60;
           }
           this.secs--;
           if (this.mins === 0){

@@ -107,17 +107,17 @@
           <p v-bind:style="pumpStatusStyle"> {{ pumpStatus }}</p>
         </div>
 
+        <div id="footer" class="panel" v-if="initialised">
+          <p class="box-heading">Footer</p>
+          <hr />
+          <p class="box-heading">Current time is {{timeNow}}</p>
+        </div>
+        
         <div id="chart" class="panel">
           <p class="box-heading">Chart</p>
           <hr />
           <canvas id="myChart"></canvas>
           <button id="chartStartButton" onclick="startChartFunction();" v-bind:style="sendInputButtonStyle">Plot</button>
-        </div>
-
-        <div id="footer" class="panel" v-if="initialised">
-          <p class="box-heading">Footer</p>
-          <hr />
-          <p class="box-heading">Current time is {{timeNow}}</p>
         </div>
 
       </div>
