@@ -76,3 +76,21 @@ socket.on('updateTemp', function(param){
 socket.on('updatePercent', function(param){
   vueApp.sentInputPercent = param;
 });
+
+// PID values on init
+socket.on('PValue', function(param){
+  vueApp.PvalueSet = param;
+});
+socket.on('IValue', function(param){
+  vueApp.IvalueSet = param;
+});
+socket.on('DValue', function(param){
+  vueApp.DvalueSet = param;
+});
+socket.on('windowSizeValue',function(param){
+  vueApp.windowSizeValueSet = param;
+});
+
+// PID calc
+socket.on('error', function(param){});
+socket.on('dInput', function(param){});

@@ -146,8 +146,13 @@ var vueApp = new Vue({
     time3: "",
     mins: 0,
     secs: 0,
-    warning: false
-
+    warning: false,
+    PvalueSet: 0,
+    IvalueSet: 0,
+    DvalueSet: 0,
+    windowSizeValueSet: 0,
+    pError: 0,
+    pTermValue: 0
   },
   computed: {
     min: function(){
@@ -161,7 +166,19 @@ var vueApp = new Vue({
         return '0' + this.secs;
       }
       return this.secs;
-    }
+    }/*,
+    error: function(){
+      if (this.temp != 'n/a'){
+        this.pError = this.sentInputTemp - this.temp;
+        return this.pError;
+      }
+    },
+    pTerm: function(){
+      if (this.temp != 'n/a'){
+        this.pTermValue = this.error * this.PvalueSet;
+        return this.pTermValue;
+      }
+    }*/
   },
   methods: {
     // Pump On Button

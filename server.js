@@ -19,6 +19,9 @@ var elementState = 0;
 var inAuto = 1;
 var pumpState = 0;
 
+var Kp = 0, Ki = 75, Kd = 7500;
+var WindowSize = 10000;
+
 // Setup JS event emitter
 var event = new EventEmitter();
 
@@ -115,6 +118,12 @@ io.on('connection', function(socket){
     };
     io.sockets.emit('inputTempChanged', setTemp);
     io.sockets.emit('inputPercentChanged', manPercent);
+
+    // PID values
+    io.sockets.emit('PValue',Kp);
+    io.sockets.emit('IValue',Ki);
+    io.sockets.emit('DValue',Kd);
+    io.sockets.emit('windowSizeValue',WindowSize);
   });
 
 });
@@ -196,43 +205,46 @@ board.on("ready", function() {
 
 
   // Conversion from Brett Beauregard's PID tutorials
-   // On/Off & Initialization tutorials not implemented(!)
-   // Direction tutorial not implemented as not relevant
+  // On/Off & Initialization tutorials not implemented(!)
+  // Direction tutorial not implemented as not relevant
 
-   // Ready to implement Proportional on Measurement
-   // http://brettbeauregard.com/blog/2017/06/proportional-on-measurement-the-code/
+  // Ready to implement Proportional on Measurement
+  // http://brettbeauregard.com/blog/2017/06/proportional-on-measurement-the-code/
 
-   // variables
-   var lastTime = millis();
-   var Input, Output, Setpoint;
-   var outputSum = 0, lastInput = 0;
-   var kp, ki, kd;
-   var SampleTime;
-   var outMin, outMax;
-   var Kp = 7500, Ki = 75, Kd = 0;
+  // variables
+  var lastTime = millis();
+  var Input, Output, Setpoint;
+  var outputSum = 0, lastInput = 0;
+  var kp, ki, kd;
+  var SampleTime;
+  var outMin, outMax;
+  var pTerm = 0;
 
-   // Setup
-   SetSampleTime(50);
-   SetTunings(Kp, Ki, Kd);
 
-   //console.log(kp, kd, ki);
-   var WindowSize = 5000;
-   windowStartTime = millis();
-   SetOutputLimits(0, WindowSize);
 
-   // PID code
-   function Compute() {
-     if(!inAuto) return; // doesn't calc PID when in manual mode
-     if(elementState == 0) return; //turns off the PID calcs when the master switch is off
-     if ( temp != undefined ) {
-       //nathan added this to convert the Brett Beauregard code with existing code
-       var Setpoint = setTemp;
-       Input = temp;
 
-       // How long since we last calculated
-       var now = millis();
-       var timeChange = now - lastTime;
-       if ( timeChange >= SampleTime ) {
+  // Setup
+  SetSampleTime(50);
+  SetTunings(Kp, Ki, Kd);
+
+  //console.log(kp, kd, ki);
+
+  windowStartTime = millis();
+  SetOutputLimits(0, WindowSize);
+
+  // PID code
+  function Compute() {
+    if(!inAuto) return; // doesn't calc PID when in manual mode
+    if(elementState == 0) return; //turns off the PID calcs when the master switch is off
+    if ( temp != undefined ) {
+      //nathan added this to convert the Brett Beauregard code with existing code
+      var Setpoint = setTemp;
+      Input = temp;
+
+      // How long since we last calculated
+      var now = millis();
+      var timeChange = now - lastTime;
+      if ( timeChange >= SampleTime ) {
 
         // Compute all the working error variables
         var error = Setpoint - Input;
@@ -242,12 +254,13 @@ board.on("ready", function() {
         outputSum += (ki * error);
 
         // Compute P Output
-        outputSum -= kp * dInput;
+        pTerm = kp * error // Standard P term
+        //outputSum -= kp * dInput; // PonE P term
         if ( outputSum > outMax ) { outputSum = outMax; }
         else if ( outputSum < outMin ) { outputSum = outMin; }
 
         // Compute D Output and sum PID Output
-        Output = outputSum - kd * dInput;
+        Output = pTerm + outputSum - kd * dInput;
         //console.log("Output: ", Output);
         if ( Output > outMax ) { Output = outMax; }
         else if ( Output < outMin ) { Output = outMin; }
@@ -259,59 +272,59 @@ board.on("ready", function() {
         //Remember some variables for next time
         lastInput = Input;
         lastTime = now;
-       }
-     }
-   }
+      }
+    }
+  }
 
-   var Kp;
-   var Ki;
-   var Kd;
+  var Kp;
+  var Ki;
+  var Kd;
 
-   function SetTunings(Kp, Ki, Kd) {
-     var SampleTimeInSec = (SampleTime)/1000;
-     kp = Kp;
-     ki = Ki * SampleTimeInSec;
-     kd = Kd / SampleTimeInSec;
-   }
+  function SetTunings(Kp, Ki, Kd) {
+    var SampleTimeInSec = (SampleTime)/1000;
+    kp = Kp;
+    ki = Ki * SampleTimeInSec;
+    kd = Kd / SampleTimeInSec;
+  }
 
-   var NewSampleTime;
-   function SetSampleTime(NewSampleTime){
-     if (NewSampleTime > 0) {
-       var ratio  = NewSampleTime / SampleTime;
-       ki *= ratio;
-       kd /= ratio;
-       SampleTime = NewSampleTime;
-     }
-   }
+  var NewSampleTime;
+  function SetSampleTime(NewSampleTime){
+    if (NewSampleTime > 0) {
+      var ratio  = NewSampleTime / SampleTime;
+      ki *= ratio;
+      kd /= ratio;
+      SampleTime = NewSampleTime;
+    }
+  }
 
-   var Min, Max;
-   function SetOutputLimits(Min, Max){
-     if ( Min > Max ) return;
-     outMin = Min;
-     outMax = Max;
+  var Min, Max;
+  function SetOutputLimits(Min, Max){
+    if ( Min > Max ) return;
+    outMin = Min;
+    outMax = Max;
 
-     if ( Output > outMax ) { Output = outMax; }
-     else if ( Output < outMin ) { Output = outMin; }
+    if ( Output > outMax ) { Output = outMax; }
+    else if ( Output < outMin ) { Output = outMin; }
 
-     if ( outputSum > outMax ) { outputSum = outMax; }
-     else if ( outputSum < outMin ) { outputSum = outMin; }
-   }
-
-
+    if ( outputSum > outMax ) { outputSum = outMax; }
+    else if ( outputSum < outMin ) { outputSum = outMin; }
+  }
 
 
-   // This function is for controlling the element in Manual mode
-   function manualMode() {
-     if(inAuto) return;
-     Output = manPercent * ( WindowSize / 100 );
-     var outputAsPercent = (Output / WindowSize)*100;
-     io.sockets.emit('outputUpdate', outputAsPercent);
 
-   }
 
-   //This is the function that calls the (PID & manual) code and controls the relay
+  // This function is for controlling the element in Manual mode
+  function manualMode() {
+    if(inAuto) return;
+    Output = manPercent * ( WindowSize / 100 );
+    var outputAsPercent = (Output / WindowSize)*100;
+    io.sockets.emit('outputUpdate', outputAsPercent);
 
-   /*First we decide on a window size (5000mS say.) We then
+  }
+
+  //This is the function that calls the (PID & manual) code and controls the relay
+
+  /*First we decide on a window size (5000mS say.) We then
     * set the pid to adjust its output between 0 and that window
     * size.  Lastly, we add some logic that translates the PID
     * output into "Relay On Time" with the remainder of the
@@ -325,16 +338,16 @@ board.on("ready", function() {
      // turn the element on/off based on pid output (taken from Arduino PID RelayOutput Example)
      var now = millis();
 
-     if ( now - windowStartTime > WindowSize ) { //time to shift the Relay Window
-       windowStartTime += WindowSize;
-     }
+    if ( now - windowStartTime > WindowSize ) { //time to shift the Relay Window
+      windowStartTime += WindowSize;
+    }
 
-     if ( Output > now - windowStartTime ) {
-       event.emit('turnElementOn'); // turn on the element!
-     } else {
-       event.emit('turnElementOff');
-     }
-   }, SampleTime);
+    if ( Output > now - windowStartTime ) {
+      event.emit('turnElementOn'); // turn on the element!
+    } else {
+      event.emit('turnElementOff');
+    }
+  }, SampleTime);
 
 
 
