@@ -1,53 +1,3 @@
-/*var chartTimeLabels = ["first"];
-
-var chartActualTempData = [0];
-var chartSetTempData = [];
-var chartOutputPercentData = [];
-
-setInterval(function() {
-  // get current time
-  var date = new Date();
-  var s = date.getSeconds().toString();
-  var m = date.getMinutes().toString();
-  var h = date.getHours().toString();
-  var time = h.concat(":").concat(m).concat(":").concat(s);
-
-  // add current time to chart's label array
-  chartTimeLabels.push(time);
-
-  // add data to chart's data array
-  //newData.push(Math.floor((Math.random() * 10) + 1));
-  chartActualTempData.push(vueApp.temp);
-  chartSetTempData.push(vueApp.sentInputTemp);
-  chartOutputPercentData.push(vueApp.outputPercent);
-
-  // re-render the chart with the new data
-  // chart.update();
-
-}, 5000);
-
-var newLabels = ['crap', 'poo', 'wee'];
-var newData = [2, 1, 3];
-
-Vue.component('line-chart', {
-  extends: VueChartJs.Line,
-  mounted () {
-    this.renderChart({
-      labels: newLabels,//['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        {
-          label: 'Data One',
-          backgroundColor: colours.basegreen,//'#f87979',
-          data: newData,//[40, 39, 10, 40, 39, 80, 40]
-        }
-      ]
-    }, {responsive: true, maintainAspectRatio: true})
-  }
-});
-
-//alert(Vue.component('line-chart').renderChart();
-*/
-
 // Defines Colours
 var colours = {
   black: 'black',
@@ -150,6 +100,7 @@ pumpStatusStyleSet.backgroundColor = colours.basered;
 
 var tempStyleSet = {fontSize: "26px", borderRadius: '5px', backgroundColor: colours.bg,	width: '100px', padding: '6px 10px',	margin: '4px 0'};
 var inputStyleSet = {fontSize: "18px"};
+var profileStyleSet = {fontSize: "20px", borderRadius: '5px', backgroundColor: colours.bg,	width: '300px', padding: '6px 10px',	margin: '4px 0'};
 
 
 // Vue code ********************************************************************
@@ -194,7 +145,8 @@ var vueApp = new Vue({
     temp3: "",
     time3: "",
     mins: 0,
-    secs: 0
+    secs: 0,
+    warning: false
 
   },
   computed: {
@@ -341,14 +293,89 @@ var vueApp = new Vue({
         // alert(this.timeNow);
       }, 1000);
     },
+
     startCountdown: function(){
+
+      if(this.time1 === ""){
+        this.warning = true;
+        return;
+      }
+      this.warning = false;
       this.timerOn = true;
       this.mins = this.time1;
       this.secs = 0;
 
       socket.emit('inputTempChanged', this.temp1);
-      // if (this.temp >= this.sentInputTemp){
-        this.intervalid2 = setInterval(() => {
+
+      var temp1min = (this.temp1 - 0.75);
+      var temp1max = (this.temp1 + 1)-((this.temp1 * 10)-this.temp1);
+
+      this.intervalid2 = setInterval(() => {
+        if ( ( this.temp >= temp1min ) && ( this.temp <= temp1max ) ) {
+          if (this.secs === 0){
+            this.mins--;
+
+            this.secs = 60;
+          }
+          this.secs--;
+          if (this.mins === 0){
+            if (this.secs === 0){
+
+              clearInterval(this.intervalid2);
+              if (this.temp2 === ""){
+                this.timerOn = false;
+                alert('Mash profile finished');
+                return;
+              }
+              this.secondStageCountdown();
+            }
+          }
+        }
+      }, 1000);
+    },
+
+    secondStageCountdown: function(){
+
+      this.mins = this.time2;
+      this.secs = 0;
+
+      socket.emit('inputTempChanged', this.temp2);
+      var temp2min = (this.temp2 - 0.75);
+      var temp2max = (this.temp2 + 1)-((this.temp2 * 10)-this.temp2);
+
+      this.intervalid3 = setInterval(() => {
+        if ( ( this.temp >= temp2min ) && ( this.temp <= temp2max ) ) {
+          if (this.secs === 0){
+            this.mins--;
+
+            this.secs = 60;
+          }
+          this.secs--;
+          if (this.mins === 0){
+            if (this.secs === 0){
+              clearInterval(this.intervalid3);
+              if (this.temp3 === ""){
+                this.timerOn = false;
+                alert('Mash profile finished');
+                return;
+              }
+              this.thirdStageCountdown();
+            }
+          }
+        }
+      }, 1000);
+    },
+
+    thirdStageCountdown: function(){
+      this.mins = this.time3;
+      this.secs = 0;
+
+      socket.emit('inputTempChanged', this.temp3);
+      var temp3min = (this.temp3 - 0.75);
+      var temp3max = (this.temp3 + 1)-((this.temp3 * 10)-this.temp3);
+
+      this.intervalid4 = setInterval(() => {
+        if ( ( this.temp >= temp3min ) && ( this.temp <= temp3max ) ) {
           if (this.secs === 0){
             this.mins--;
 
@@ -357,45 +384,15 @@ var vueApp = new Vue({
           this.secs--;
           if (this.mins === 0){
             if (this.secs === 0){
-
-              clearInterval(this.intervalid2);
-              this.secondStageCountdown();
-
+              clearInterval(this.intervalid4);
+              this.timerOn = false;
+              alert('Mash profile finished');
             }
           }
-        }, 1000);
-
-      // }
-
-    },
-    secondStageCountdown: function(){
-
-      // if ((this.time2 || this.temp2) != ""){
-        this.mins = this.time2;
-        this.secs = 0;
-
-        socket.emit('inputTempChanged', this.temp2);
-        if (this.temp >= this.sentInputTemp){
-          // alert(this.temp);
-          this.intervalid3 = setInterval(() => {
-            if (this.secs === 0){
-              this.mins--;
-
-              this.secs = 60;
-            }
-            this.secs--;
-            if (this.mins === 0){
-              if (this.secs === 0){
-                clearInterval(this.intervalid3);
-                // this.thirdStageCountdown();
-                this.timerOn = false;
-                alert('no 3rd stage function yet');
-              }
-            }
-          }, 1000);
         }
-      // }
+      }, 1000);
     },
+
     stopCountdown: function(){
       this.timerOn = false;
       clearInterval(this.intervalid2);
