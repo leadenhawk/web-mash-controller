@@ -24,7 +24,13 @@
           <h1 style="text-align: center">Nathan's Controller</h1>
         </div>
 
-        <!-- <canvas id="myChart" ></canvas> -->
+        <div id="outputIndicators" class="panel" v-if="initialised">
+          <p class="box-heading">outputIndicators</p>
+          <p v-if="mode == 'Mash'" v-bind:style="tempStyle"> {{ temp }} °C</p>
+          <p v-if="mode == 'Boil'" v-bind:style="tempStyle"> n/a °C</p>
+          <p v-bind:style="tempStyle"> {{ outputPercent }} %</p>
+          <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
+        </div>
 
         <div id="initilise" class="panel" v-if="!initialised">
           <button v-on:click="initialiseClicked" v-bind:style="initiliseButtonStyle">Initialise</button>
@@ -40,15 +46,7 @@
           <button v-on:click='elementOffClicked' v-bind:style="elementOffButtonStyle">OFF</button>
         </div>
 
-        <div id="outputIndicators" class="panel" v-if="initialised">
-          <p class="box-heading">outputIndicators</p>
-          <p v-if="mode == 'Mash'" v-bind:style="tempStyle"> {{ temp }} °C</p>
-          <p v-if="mode == 'Boil'" v-bind:style="tempStyle"> n/a °C</p>
-          <p v-bind:style="tempStyle"> {{ outputPercent }} %</p>
-          <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
-        </div>
-
-        <line-chart id="chart" class="panel" v-if="initialised"></line-chart>
+        <!-- <line-chart id="chart" class="panel" v-if="initialised"></line-chart> -->
 
         <!-- <div id="chart" class="panel" v-if="initialised"> -->
           <!-- <p class="box-heading">chart</p> -->
@@ -82,13 +80,22 @@
           <p v-bind:style="pumpStatusStyle"> {{ pumpStatus }}</p>
         </div>
 
-        <div id="footer" class="panel">
-          <p>footer</p>
+        <div>
+          <!-- <button onclick="setTimeout(myFunction, 3000);">Try it</button> -->
+          <button id="chartStartButton" onclick="startChartFunction();">Start Charting</button>
+
+          <!-- <button onclick="runPauseChartFunction();">Run/Pause Chart</button> -->
+
+          <canvas id="myChart"></canvas>
         </div>
+        <!-- <div id="footer" class="panel">
+          <p>footer</p>
+        </div> -->
 
       </div>
 
     </div>
+
 
     <script src="/socket.js"></script>
     <script src="/vue.js"></script>

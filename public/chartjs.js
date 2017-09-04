@@ -2,6 +2,14 @@
 {
   var ctx = document.getElementById('myChart').getContext('2d');
 
+  var chartStart = false;
+
+  function startChartFunction() {
+    document.getElementById('chartStartButton').style.visibility = "hidden";
+    chartStart = true;
+    chartRun = true;
+  };
+
   var chartTimeLabels = [];
 
   var chartActualTempData = [];
@@ -9,25 +17,23 @@
   var chartOutputPercentData = [];
 
   setInterval(function() {
-    // get current time
-    var date = new Date();
-    var s = date.getSeconds().toString();
-    var m = date.getMinutes().toString();
-    var h = date.getHours().toString();
-    var time = h.concat(":").concat(m).concat(":").concat(s);
+    if (chartStart === true){
+      // get current time
+      var date = new Date();
+      var s = date.getSeconds().toString();
+      var m = date.getMinutes().toString();
+      var h = date.getHours().toString();
+      var time = h.concat(":").concat(m).concat(":").concat(s);
 
-    // add current time to chart's label array
-    chartTimeLabels.push(time);
+      // add current time to chart's label array
+      chartTimeLabels.push(time);
 
-    // add data to chart's data array
-    //newData.push(Math.floor((Math.random() * 10) + 1));
-    chartActualTempData.push(vueApp.temp);
-    chartSetTempData.push(vueApp.sentInputTemp);
-    chartOutputPercentData.push(vueApp.outputPercent);
+      chartActualTempData.push(vueApp.temp);
+      chartSetTempData.push(vueApp.sentInputTemp);
+      chartOutputPercentData.push(vueApp.outputPercent);
 
-
-    // re-render the chart with the new data
-    chart.update();
+      chart.update();
+    }
   }, 5000);
 
 
@@ -46,32 +52,37 @@
         data: chartActualTempData,//[0, 10, 5],
         fill: false,
         yAxisID: "y-axis-1",
+        radius: 0
       },{
         label: "Set Temp",
         backgroundColor: colours.lightblue,
         borderColor: colours.baseblue,
+        borderDash: [5],
         data: chartSetTempData,
         fill: false,
         yAxisID: "y-axis-1",
-      },{
+        radius: 0,
+      }/*,{
         label: "Output",
         backgroundColor: colours.lightred,
         borderColor: colours.basered,
         data: chartOutputPercentData,
         fill: false,
         yAxisID: "y-axis-2",
-      }]
+        radius: 0
+      }*/]
     },
 
     // Configuration options go here
     options: {
+
       scales: {
         yAxes: [{
           type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
           display: true,
           position: "left",
           id: "y-axis-1",
-        }, {
+        }/*, {
           type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
           display: true,
           position: "right",
@@ -80,15 +91,15 @@
           gridLines: {
               drawOnChartArea: false, // only want the grid lines for one axis to show up
           },
-        }],
+        }*/],
       },
       // remove animations
-      animation: {
-        duration: 0, // general animation time
-      },
-      hover: {
-        animationDuration: 0, // duration of animations when hovering an item
-      },
+      // animation: {
+      //   duration: 0, // general animation time
+      // },
+      // hover: {
+      //   animationDuration: 0, // duration of animations when hovering an item
+      // },
       responsiveAnimationDuration: 0, // animation duration after a resize
 
       // remove bezier curves

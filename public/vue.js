@@ -1,20 +1,52 @@
+/*var chartTimeLabels = ["first"];
+
+var chartActualTempData = [0];
+var chartSetTempData = [];
+var chartOutputPercentData = [];
+
+setInterval(function() {
+  // get current time
+  var date = new Date();
+  var s = date.getSeconds().toString();
+  var m = date.getMinutes().toString();
+  var h = date.getHours().toString();
+  var time = h.concat(":").concat(m).concat(":").concat(s);
+
+  // add current time to chart's label array
+  chartTimeLabels.push(time);
+
+  // add data to chart's data array
+  //newData.push(Math.floor((Math.random() * 10) + 1));
+  chartActualTempData.push(vueApp.temp);
+  chartSetTempData.push(vueApp.sentInputTemp);
+  chartOutputPercentData.push(vueApp.outputPercent);
+
+  // re-render the chart with the new data
+  // chart.update();
+
+}, 5000);
+
+var newLabels = ['crap', 'poo', 'wee'];
+var newData = [2, 1, 3];
+
 Vue.component('line-chart', {
   extends: VueChartJs.Line,
   mounted () {
     this.renderChart({
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: newLabels,//['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
         {
           label: 'Data One',
-          backgroundColor: '#f87979',
-          data: [40, 39, 10, 40, 39, 80, 40]
+          backgroundColor: colours.basegreen,//'#f87979',
+          data: newData,//[40, 39, 10, 40, 39, 80, 40]
         }
       ]
     }, {responsive: true, maintainAspectRatio: true})
   }
-
 });
 
+//alert(Vue.component('line-chart').renderChart();
+*/
 
 // Defines Colours
 var colours = {
@@ -262,6 +294,7 @@ var vueApp = new Vue({
     initialiseClicked(){
       this.initialised = true;
       socket.emit('initilise');
+
     }
   }/*,
   filters: {
