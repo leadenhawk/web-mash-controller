@@ -186,12 +186,30 @@ var vueApp = new Vue({
     initialised: false,
     initiliseButtonStyle: baseblueButton,
     timeNow: "xx:xx:xx",
+    timerOn: false,
     temp1: "",
     time1: "",
     temp2: "",
     time2: "",
     temp3: "",
-    time3: ""
+    time3: "",
+    mins: 0,
+    secs: 0
+
+  },
+  computed: {
+    min: function(){
+      if (this.mins < 10){
+        return '0' + this.mins;
+      }
+      return this.mins;
+    },
+    sec: function(){
+      if (this.secs < 10){
+        return '0' + this.secs;
+      }
+      return this.secs;
+    }
   },
   methods: {
     // Pump On Button
@@ -324,9 +342,65 @@ var vueApp = new Vue({
       }, 1000);
     },
     startCountdown: function(){
-      this.intervalid2 = setInterval(() => {
-        this.time1--;
-      }, 1000);
+      this.timerOn = true;
+      this.mins = this.time1;
+      this.secs = 0;
+
+      socket.emit('inputTempChanged', this.temp1);
+      // if (this.temp >= this.sentInputTemp){
+        this.intervalid2 = setInterval(() => {
+          if (this.secs === 0){
+            this.mins--;
+
+            this.secs = 10;
+          }
+          this.secs--;
+          if (this.mins === 0){
+            if (this.secs === 0){
+
+              clearInterval(this.intervalid2);
+              this.secondStageCountdown();
+
+            }
+          }
+        }, 1000);
+
+      // }
+
+    },
+    secondStageCountdown: function(){
+
+      // if ((this.time2 || this.temp2) != ""){
+        this.mins = this.time2;
+        this.secs = 0;
+
+        socket.emit('inputTempChanged', this.temp2);
+        if (this.temp >= this.sentInputTemp){
+          // alert(this.temp);
+          this.intervalid3 = setInterval(() => {
+            if (this.secs === 0){
+              this.mins--;
+
+              this.secs = 60;
+            }
+            this.secs--;
+            if (this.mins === 0){
+              if (this.secs === 0){
+                clearInterval(this.intervalid3);
+                // this.thirdStageCountdown();
+                this.timerOn = false;
+                alert('no 3rd stage function yet');
+              }
+            }
+          }, 1000);
+        }
+      // }
+    },
+    stopCountdown: function(){
+      this.timerOn = false;
+      clearInterval(this.intervalid2);
+      clearInterval(this.intervalid3);
+      clearInterval(this.intervalid4);
     }
   },
   mounted : function(){
