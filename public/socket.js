@@ -1,5 +1,5 @@
 // Create front-end socket connection
-var socket = io.connect('http://192.168.1.67:4000');
+var socket = io.connect('http://192.168.1.100:4000');
 
 // Display actual temperature **************************************************
 socket.on('tempChange', function(temp){
@@ -14,12 +14,12 @@ socket.on('outputUpdate', function(param){
 // *****************************************************************************
 socket.on('elementOn', function(){
   vueApp.elementStatus = "ON";
-  vueApp.elementStyle.backgroundColor = colours.basegreen;
+  vueApp.elementStyle.backgroundColor = colours.brightgreen;
 });
 
 socket.on('elementOff', function(){
   vueApp.elementStatus = "OFF";
-  vueApp.elementStyle.backgroundColor = colours.basered;
+  vueApp.elementStyle.backgroundColor = colours.brightred;
 });
 
 // Pump On Button

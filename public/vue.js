@@ -16,7 +16,11 @@ var colours = {
   baseblue: '#118D8D',
   midblue: '#036262',
   darkblue: '#002D2D',
-  bg: '#292929'
+  bg: '#292929',
+  brightgreen: '#34DC08',
+  brightred: '#F9091B',
+  brightyellow: '#FFD00A',
+  darkyellow: '#AB8A00'
 }
 
 // Defines Base Styles
@@ -43,7 +47,7 @@ var baseOutputStyle = {
   borderRadius: '4px',
   backgroundColor: colours.yellow,
   border: 'none',
-  color: '#FFFFFF',
+  color: colours.bg,
   textAlign: 'center',
   fontSize: '16px',
   padding: '40px 0px 40px 0px',
@@ -57,46 +61,48 @@ var baseOutputStyle = {
 // Function that copies objects
 function shallowCopy( original )
 {
-    // First create an empty object with same prototype of our original source
-    var clone = Object.create( Object.getPrototypeOf( original ) ) ;
-    var i , keys = Object.getOwnPropertyNames( original ) ;
-    for ( i = 0 ; i < keys.length ; i ++ )
-    {
-        // copy each property into the clone
-        Object.defineProperty( clone , keys[ i ] ,
-            Object.getOwnPropertyDescriptor( original , keys[ i ] )
-        ) ;
-    }
+  // First create an empty object with same prototype of our original source
+  var clone = Object.create( Object.getPrototypeOf( original ) ) ;
+  var i , keys = Object.getOwnPropertyNames( original ) ;
+  for ( i = 0 ; i < keys.length ; i ++ )
+  {
+    // copy each property into the clone
+    Object.defineProperty( clone , keys[ i ] ,
+      Object.getOwnPropertyDescriptor( original , keys[ i ] )
+    ) ;
+  }
     return clone ;
 }
 
 // Creates different coloured buttons
-var darkgreenButton = shallowCopy(baseButton);
-darkgreenButton.backgroundColor = colours.darkgreen;
-var basegreenButton = shallowCopy(baseButton);
-basegreenButton.backgroundColor = colours.basegreen;
-var darkredButton = shallowCopy(baseButton);
-darkredButton.backgroundColor = colours.darkred;
-var baseredButton = shallowCopy(baseButton);
-baseredButton.backgroundColor = colours.basered;
-var darkblueButton = shallowCopy(baseButton);
-darkblueButton.backgroundColor = colours.darkblue;
-var baseblueButton = shallowCopy(baseButton);
-baseblueButton.backgroundColor = colours.baseblue;
+// var darkgreenButton = shallowCopy(baseButton);
+// darkgreenButton.backgroundColor = colours.darkgreen;
+// var basegreenButton = shallowCopy(baseButton);
+// basegreenButton.backgroundColor = colours.basegreen;
+// var darkredButton = shallowCopy(baseButton);
+// darkredButton.backgroundColor = colours.darkred;
+// var baseredButton = shallowCopy(baseButton);
+// baseredButton.backgroundColor = colours.basered;
+var notSelectedButton = shallowCopy(baseButton);
+notSelectedButton.backgroundColor = colours.darkyellow;
+var selectedButton = shallowCopy(baseButton);
+selectedButton.backgroundColor = colours.brightyellow;
+selectedButton.color = colours.black;
 
 // Creates output styles
 var elementOnStyleSet = shallowCopy(baseOutputStyle);
-elementOnStyleSet.backgroundColor = colours.basered;
+elementOnStyleSet.backgroundColor = colours.brightred;
 var mashBoilStyleSet = shallowCopy(baseOutputStyle);
-mashBoilStyleSet.backgroundColor = colours.basegreen;
+mashBoilStyleSet.backgroundColor = colours.brightgreen;
+mashBoilStyleSet.color = colours.black;
 // var elementLiveYesStyleSet = shallowCopy(baseOutputStyle);
 // elementLiveYesStyleSet.backgroundColor = colours.basegreen;
 // var elementLiveNoStyleSet = shallowCopy(baseOutputStyle);
 // elementLiveNoStyleSet.backgroundColor = colours.basered;
 var elementLiveStyleSet = shallowCopy(baseOutputStyle);
-elementLiveStyleSet.backgroundColor = colours.basered;
+elementLiveStyleSet.backgroundColor = colours.brightred;
 var pumpStatusStyleSet = shallowCopy(baseOutputStyle);
-pumpStatusStyleSet.backgroundColor = colours.basered;
+pumpStatusStyleSet.backgroundColor = colours.brightred;
 
 var tempStyleSet = {fontSize: "26px", borderRadius: '5px', backgroundColor: colours.bg,	width: '100px', padding: '6px 10px',	margin: '4px 0'};
 var inputStyleSet = {fontSize: "18px"};
@@ -120,14 +126,14 @@ var vueApp = new Vue({
     outputPerCent: 0,
     mode: "Mash",
     elementStatus: "OFF",
-    pumpOnButtonStyle: darkblueButton,
-    pumpOffButtonStyle: baseblueButton,
-    elementLiveButtonStyle: darkblueButton,
-    elementOffButtonStyle: baseblueButton,
-    mashModeButtonStyle: baseblueButton,
-    boilModeButtonStyle: darkblueButton,
-    chartButtonStyle: baseblueButton,
-    sendInputButtonStyle: baseblueButton,
+    pumpOnButtonStyle: notSelectedButton,
+    pumpOffButtonStyle: selectedButton,
+    elementLiveButtonStyle: notSelectedButton,
+    elementOffButtonStyle: selectedButton,
+    mashModeButtonStyle: selectedButton,
+    boilModeButtonStyle: notSelectedButton,
+    chartButtonStyle: selectedButton,
+    sendInputButtonStyle: selectedButton,
     elementStyle: elementOnStyleSet,
     mashBoilStyle: mashBoilStyleSet,
     elementLiveStyle: elementLiveStyleSet,
@@ -135,7 +141,7 @@ var vueApp = new Vue({
     tempStyle: tempStyleSet,
     inputStyle: inputStyleSet,
     initialised: false,
-    initiliseButtonStyle: baseblueButton,
+    initiliseButtonStyle: selectedButton,
     timeNow: "xx:xx:xx",
     timerOn: false,
     temp1: "",
@@ -191,8 +197,8 @@ var vueApp = new Vue({
       socket.emit('pumpOnButtonPressed');
     },
     changePumpOnButtonStyle(){
-      this.pumpOnButtonStyle = baseblueButton;
-      this.pumpOffButtonStyle = darkblueButton;
+      this.pumpOnButtonStyle = selectedButton;
+      this.pumpOffButtonStyle = notSelectedButton;
       pumpStatusStyleSet.backgroundColor = colours.basegreen;
     },
 
@@ -207,9 +213,9 @@ var vueApp = new Vue({
 
     },
     changePumpOffButtonStyle(){
-      this.pumpOnButtonStyle = darkblueButton;
-      this.pumpOffButtonStyle = baseblueButton;
-      pumpStatusStyleSet.backgroundColor = colours.basered;
+      this.pumpOnButtonStyle = notSelectedButton;
+      this.pumpOffButtonStyle = selectedButton;
+      pumpStatusStyleSet.backgroundColor = colours.brightred;
     },
 
     //Element Live Button
@@ -223,8 +229,8 @@ var vueApp = new Vue({
       socket.emit("elementLivePressed");
     },
     changeElementLiveButtonStyle(){
-      this.elementLiveButtonStyle = baseblueButton;
-      this.elementOffButtonStyle = darkblueButton;
+      this.elementLiveButtonStyle = selectedButton;
+      this.elementOffButtonStyle = notSelectedButton;
       elementLiveStyleSet.backgroundColor = colours.basegreen;
     },
 
@@ -238,9 +244,9 @@ var vueApp = new Vue({
       socket.emit("elementOffPressed", this.elementActive);
     },
     changeElementOffButtonStyle(){
-      this.elementOffButtonStyle = baseblueButton;
-      this.elementLiveButtonStyle = darkblueButton;
-      elementLiveStyleSet.backgroundColor = colours.basered;
+      this.elementOffButtonStyle = selectedButton;
+      this.elementLiveButtonStyle = notSelectedButton;
+      elementLiveStyleSet.backgroundColor = colours.brightred;
     },
 
     // Mash Mode Button
@@ -253,8 +259,8 @@ var vueApp = new Vue({
       socket.emit("mashModeActive")
     },
     changeMashModeButtonStyle(){
-      this.mashModeButtonStyle = baseblueButton;
-      this.boilModeButtonStyle = darkblueButton;
+      this.mashModeButtonStyle = selectedButton;
+      this.boilModeButtonStyle = notSelectedButton;
       mashBoilStyleSet.backgroundColor = colours.basegreen;
     },
 
@@ -268,9 +274,9 @@ var vueApp = new Vue({
       socket.emit("boilModeActive")
     },
     changeBoilModeButtonStyle(){
-      this.mashModeButtonStyle = darkblueButton;
-      this.boilModeButtonStyle = baseblueButton;
-      mashBoilStyleSet.backgroundColor = colours.basered;
+      this.mashModeButtonStyle = notSelectedButton;
+      this.boilModeButtonStyle = selectedButton;
+      mashBoilStyleSet.backgroundColor = colours.brightred;
     },
 
     // Send temp to arduino button
