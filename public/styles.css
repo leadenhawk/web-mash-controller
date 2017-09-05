@@ -14,15 +14,84 @@ body {
 /* styles */
 
 @supports (grid-area: auto) {
+
+	/*portrait mobile*/
 	@media screen and (min-width: 360px) {
 
     .grid {
 			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(340px,1fr));
+			grid-template-columns: 1fr minmax(320px,1fr) 1fr;
+			/*grid-template-columns: 1fr 340px 1fr;*/
+			grid-template-rows: 1fr minmax(1em, auto);
       grid-gap: 10px;
+			grid-template-areas:
+				". banner ."
+				". init ."
+				". output ."
+ 				". mode ."
+				". input ."
+				". profile . "
+				". control ."
+				". pump ."
+				". footer ."
+				". chart .";
+
+    }
+	}
+
+	/*landscape mobile*/
+	@media screen and (min-width: 550px) {
+
+		.grid {
+			display: grid;
+			grid-template-columns: 1fr minmax(560px,1fr) 1fr;
+			/*grid-template-columns: 1fr 340px 1fr;*/
+			grid-template-rows: 1fr minmax(1em, auto);
+			grid-gap: 10px;
+			grid-template-areas:
+				". banner ."
+				". init ."
+				". output ."
+				". mode ."
+				". input ."
+				". profile . "
+				". control ."
+				". pump ."
+				". footer ."
+				". chart .";
+
+		}
+	}
+
+	/*fullscreen desktop*/
+	@media screen and (min-width: 980px) {
+
+    .grid {
+			display: grid;
+			/*grid-template-columns: repeat(auto-fill, minmax(340px,1fr));*/
+			/*grid-template-columns: 1fr minmax(1fr, 340px) 340px 340px 1fr;*/
+			grid-template-columns: 1fr repeat(3, minmax(340px,1fr)) 1fr;
+			/*grid-template-columns: 1fr repeat(3,minmax(auto, 340)) 1fr;*/
+			grid-template-rows: 1fr minmax(1em, auto);
+      grid-gap: 25px;
+			grid-template-areas:
+			"banner banner 	banner 	banner 	banner"
+			". 			. 			init 		.				."
+			". 			output 	input 	mode 		."
+			". 			profile control	.				."
+			". 			profile pump 		.				."
+			"footer	footer 	footer	footer	footer"
+			"chart 	chart 	chart 	chart 	chart";
+
     }
 	}
 }
+
+
+
+
+
+
 
 body{
   color: var(--fontcolour);
@@ -58,18 +127,23 @@ input[type=number] {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-/*#mode-selector{
-	grid-area: mode;
-
-}
-
 #banner{
 	grid-area: banner;
 
 }
 
-#chart{
-	grid-area: chart;
+#initilise{
+	grid-area: init;
+
+}
+
+#outputIndicators{
+	grid-area: output;
+
+}
+
+#mode-selector{
+	grid-area: mode;
 
 }
 
@@ -78,8 +152,8 @@ input[type=number] {
 
 }
 
-#outputIndicators{
-	grid-area: output;
+#profile{
+	grid-area: profile;
 
 }
 
@@ -96,4 +170,9 @@ input[type=number] {
 #footer{
 	grid-area: footer;
 
-}*/
+}
+
+#chart{
+	grid-area: chart;
+
+}
