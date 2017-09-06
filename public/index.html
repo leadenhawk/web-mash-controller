@@ -34,17 +34,29 @@
           <p v-if="mode == 'Mash'" v-bind:style="tempStyle"> {{ temp }} °C</p>
           <p v-if="mode == 'Boil'" v-bind:style="tempStyle"> n/a °C</p>
           <p v-bind:style="tempStyle"> {{ outputPercent }} %</p>
-          <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
           <p v-if="timerOn" v-bind:style="profileStyleSet">Mash Profile: {{min}}:{{sec}} at {{sentInputTemp}}°C</p>
           <p v-else v-bind:style="profileStyleSet">Mash Profile OFF</p>
         </div>
 
+        <div id="elementIndicator" class="panel" v-if="initialised">
+          <p class="box-heading">Element Status</p>
+          <hr />
+          <p> </p>
+          <p v-bind:style="elementStyle"> {{ elementStatus }} </p>
+          <p> </p>
+        </div>
+
         <div id="mode-selector" class="panel" v-if="initialised">
-          <p class="box-heading">Selectors</p>
+          <p class="box-heading">Mode Selector</p>
           <hr />
           <p v-bind:style="mashBoilStyle">{{ mode }} </p>
           <button v-on:click="mashMode" v-bind:style="mashModeButtonStyle">Mash</button>
           <button v-on:click="boilMode" v-bind:style="boilModeButtonStyle">Boil</button>
+        </div>
+
+        <div id="live-selector" class="panel" v-if="initialised">
+          <p class="box-heading">Element Live Selector</p>
+          <hr />
           <p v-bind:style="elementLiveStyle"> {{ elementLiveStatus }} </p>
           <button v-on:click='elementLiveClicked' v-bind:style="elementLiveButtonStyle">Live</button>
           <button v-on:click='elementOffClicked' v-bind:style="elementOffButtonStyle">OFF</button>
@@ -70,22 +82,22 @@
         <div id="profile" class="panel" v-if="initialised">
           <p class="box-heading">Mash profile</p>
           <hr />
-          <p style="width: 80px">Stage 1</p>
+          <!-- <p style="width: 80px, text-align: center">Stage 1</p> -->
           <input v-model="temp1" type="number" placeholder="temp" style="width: 100px" min="0" max="100">
           <input v-model="time1" type="number" placeholder="time" style="width: 100px" min="1" max="240">
           <p v-if="warning">Enter time</p>
           <hr />
-          <p style="width: 80px">Stage 2</p>
+          <!-- <p style="width: 80px, text-align: center">Stage 2</p> -->
           <input v-model="temp2" type="number" placeholder="temp" style="width: 100px" min="0" max="100">
           <input v-model="time2" type="number" placeholder="time" style="width: 100px" min="1" max="240">
           <hr />
-          <p style="width: 80px">Stage 3</p>
+          <!-- <p style="width: 80px, text-align: center">Stage 3</p> -->
           <input v-model="temp3" type="number" placeholder="temp" style="width: 100px" min="0" max="100">
           <input v-model="time3" type="number" placeholder="time" style="width: 100px" min="1" max="240">
           <hr />
           <button v-if="!timerOn"v-on:click="startCountdown" v-bind:style="sendInputButtonStyle">Start</button>
           <button v-if="timerOn"v-on:click="stopCountdown" v-bind:style="sendInputButtonStyle">Stop</button>
-          <p v-if="timerOn">Timer: {{min}}:{{sec}} at {{sentInputTemp}}°C. Actual temp: {{temp}} °C</p>
+          <!-- <p v-if="timerOn">Timer: {{min}}:{{sec}} at {{sentInputTemp}}°C. Actual temp: {{temp}} °C</p> -->
         </div>
 
         <div id="controlValues" class="panel" v-if="initialised">
@@ -102,14 +114,14 @@
         <div id="pump" class="panel" v-if="initialised">
           <p class="box-heading">Pump Control</p>
           <hr />
+          <p v-bind:style="pumpStatusStyle"> {{ pumpStatus }}</p>
           <button v-on:click="pumpOnClicked" v-bind:style="pumpOnButtonStyle">ON</button>
           <button v-on:click="pumpOffClicked" v-bind:style="pumpOffButtonStyle">OFF</button>
-          <p v-bind:style="pumpStatusStyle"> {{ pumpStatus }}</p>
         </div>
 
         <div id="footer" class="panel" v-if="initialised">
           <p class="box-heading">Current time is {{timeNow}}</p>
-          <hr />
+          <!-- <hr /> -->
 
         </div>
 

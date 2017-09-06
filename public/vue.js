@@ -104,9 +104,9 @@ elementLiveStyleSet.backgroundColor = colours.brightred;
 var pumpStatusStyleSet = shallowCopy(baseOutputStyle);
 pumpStatusStyleSet.backgroundColor = colours.brightred;
 
-var tempStyleSet = {fontSize: "26px", borderRadius: '5px', backgroundColor: colours.bg,	width: '100px', padding: '6px 10px',	margin: '4px 0'};
-var inputStyleSet = {fontSize: "18px"};
-var profileStyleSet = {fontSize: "20px", borderRadius: '5px', backgroundColor: colours.bg,	width: '300px', padding: '6px 10px',	margin: '4px 0'};
+var tempStyleSet = {fontSize: "26px", borderRadius: '5px', backgroundColor: colours.bg,	width: '100px', padding: '6px 10px',	margin: '4px 0', textAlign: 'center'};
+var inputStyleSet = {fontSize: "18px", textAlign: 'center'};
+var profileStyleSet = {fontSize: "20px", borderRadius: '5px', backgroundColor: colours.bg,	width: '300px', padding: '6px 10px',	margin: '4px 0', textAlign: 'center'};
 
 
 // Vue code ********************************************************************
@@ -158,7 +158,8 @@ var vueApp = new Vue({
     DvalueSet: 0,
     windowSizeValueSet: 0,
     pError: 0,
-    pTermValue: 0
+    pTermValue: 0,
+    stage1: "Stage 1"
   },
   computed: {
     min: function(){

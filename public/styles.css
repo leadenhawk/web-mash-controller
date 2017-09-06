@@ -15,83 +15,103 @@ body {
 
 @supports (grid-area: auto) {
 
-	/*portrait mobile*/
-	@media screen and (min-width: 360px) {
-
+	/*too small! display nothing*/
+	@media screen and (min-width: 10px) {
     .grid {
 			display: grid;
 			grid-template-columns: 1fr minmax(320px,1fr) 1fr;
-			/*grid-template-columns: 1fr 340px 1fr;*/
 			grid-template-rows: 1fr minmax(1em, auto);
       grid-gap: 10px;
 			grid-template-areas:
-				". banner ."
-				". init ."
-				". output ."
- 				". mode ."
-				". input ."
-				". profile . "
-				". control ."
-				". pump ."
-				". footer ."
-				". chart .";
+			". . ."
+    }
+	}
 
+	/*portrait mobile*/
+	@media screen and (min-width: 340px) {
+    .grid {
+			display: grid;
+			grid-template-columns: 1fr minmax(320px,1fr) 1fr;
+			grid-template-rows: 1fr minmax(1em, auto);
+      grid-gap: 10px;
+			grid-template-areas:
+			".	banner 	."
+			". 	init 		."
+			". 	element	."
+			". 	live 		."
+			". 	output 	."
+			". 	mode 		."
+			". 	input 	."
+			". 	profile	."
+			". 	control	."
+			". 	pump 		."
+			". 	footer 	."
+			". 	chart 	.";
     }
 	}
 
 	/*landscape mobile*/
-	@media screen and (min-width: 550px) {
-
+	@media screen and (min-width: 380px) {
 		.grid {
 			display: grid;
-			grid-template-columns: 1fr minmax(560px,1fr) 1fr;
-			/*grid-template-columns: 1fr 340px 1fr;*/
+			grid-template-columns: 1fr repeat(2, minmax(288px,1fr)) 1fr;
 			grid-template-rows: 1fr minmax(1em, auto);
-			grid-gap: 10px;
+			grid-gap: 2px;
 			grid-template-areas:
-				". banner ."
-				". init ."
-				". output ."
-				". mode ."
-				". input ."
-				". profile . "
-				". control ."
-				". pump ."
-				". footer ."
-				". chart .";
+			"banner 	banner 		banner 		banner"
+			".				init			init 			."
+			".				live			element 	."
+			".				output		profile   ."
+			". 				mode 			input 		."
+			". 				pump	 		control		."
+			". 				.	 				.					."
+			". 				.	 				.					."
+			"footer		footer 		footer		footer"
+			"chart 		chart 		chart 		chart";
+		}
+	}
 
+	/*half screen desktop*/
+	@media screen and (min-width: 580px) {
+		.grid {
+			display: grid;
+			grid-template-columns: 1fr repeat(2, minmax(340px,1fr)) 1fr;
+			grid-template-rows: 1fr minmax(1em, auto);
+			grid-gap: 25px;
+			grid-template-areas:
+			"banner 	banner 		banner 		banner"
+			".				init			init 			."
+			".				live			element 	."
+			".				output		profile   ."
+			". 				mode 			input 		."
+			". 				pump	 		control		."
+			". 				.	 				.					."
+			". 				.	 				.					."
+			"footer		footer 		footer		footer"
+			"chart 		chart 		chart 		chart";
 		}
 	}
 
 	/*fullscreen desktop*/
 	@media screen and (min-width: 980px) {
-
     .grid {
 			display: grid;
-			/*grid-template-columns: repeat(auto-fill, minmax(340px,1fr));*/
-			/*grid-template-columns: 1fr minmax(1fr, 340px) 340px 340px 1fr;*/
 			grid-template-columns: 1fr repeat(3, minmax(340px,1fr)) 1fr;
-			/*grid-template-columns: 1fr repeat(3,minmax(auto, 340)) 1fr;*/
 			grid-template-rows: 1fr minmax(1em, auto);
       grid-gap: 25px;
 			grid-template-areas:
-			"banner banner 	banner 	banner 	banner"
-			". 			. 			init 		.				."
-			". 			output 	input 	mode 		."
-			". 			profile control	.				."
-			". 			profile pump 		.				."
-			"footer	footer 	footer	footer	footer"
-			"chart 	chart 	chart 	chart 	chart";
-
+			"banner 	banner 		banner 		banner 	banner"
+			".				.		 			init 			.				."
+			".				live			element 	output 	."
+			". 				mode 			input 		profile	."
+			". 				pump	 		control		profile	."
+			". 				.	 				.					.				."
+			". 				.	 				.					.				."
+			"footer		footer 		footer		footer	footer"
+			"chart 		chart 		chart 		chart 	chart";
     }
 	}
 }
-
-
-
-
-
-
 
 body{
   color: var(--fontcolour);
@@ -120,59 +140,65 @@ input[type=number] {
 
 .panel{
 	background: linear-gradient(to right, var(--panelColorOne), var(--panelColorTwo));
-	/*background-color: grey;*/
   padding-left: 10px;
   padding-top: 5px;
-  /*border: 2px solid black;*/
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	text-align: center;
 }
 
 #banner{
 	grid-area: banner;
-
+	padding-top: 32px;
+	padding-bottom: 40px;
 }
 
 #initilise{
 	grid-area: init;
-
+	padding-top: 32px;
+	padding-bottom: 40px;
 }
 
 #outputIndicators{
 	grid-area: output;
+}
 
+#elementIndicator{
+	grid-area: element;
 }
 
 #mode-selector{
 	grid-area: mode;
+}
 
+#live-selector{
+	grid-area: live;
 }
 
 #Input{
 	grid-area: input;
-
+	padding-bottom: 8px;
 }
 
 #profile{
 	grid-area: profile;
-
+	padding-bottom: 8px;
 }
 
 #controlValues{
 	grid-area: control;
-
 }
 
 #pump{
 	grid-area: pump;
-
 }
 
 #footer{
 	grid-area: footer;
-
+	padding-top: 46px;
+	padding-bottom: 54px;
 }
 
 #chart{
 	grid-area: chart;
-
+	padding-bottom: 8px;
 }
