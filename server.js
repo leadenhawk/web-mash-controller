@@ -120,10 +120,10 @@ io.on('connection', function(socket){
     io.sockets.emit('inputPercentChanged', manPercent);
 
     // PID values
-    // io.sockets.emit('PValue',Kp);
-    // io.sockets.emit('IValue',Ki);
-    // io.sockets.emit('DValue',Kd);
-    // io.sockets.emit('windowSizeValue',WindowSize);
+    //io.sockets.emit('PValue',Kp);
+    //io.sockets.emit('IValue',Ki);
+    //io.sockets.emit('DValue',Kd);
+    //io.sockets.emit('windowSizeValue',WindowSize);
   });
 
 });
@@ -152,7 +152,7 @@ board.on("ready", function() {
 
   // J5 code - this reads the thermometer and stores it in variable temp
   thermo.on("change", function() {
-    temp = this.celsius;
+    temp = this.celsius.toFixed(1);
 
     // Socket.io code - this emits the temp
     io.sockets.emit('tempChange', temp);
@@ -257,13 +257,14 @@ board.on("ready", function() {
         outputSum += (ki * error);
 
         // Compute P Output
-        pTerm = kp * error // Standard P term
-        //outputSum -= kp * dInput; // PonE P term
+        //pTerm = kp * error // Standard P term
+        outputSum -= kp * dInput; // PonE P term
         if ( outputSum > outMax ) { outputSum = outMax; }
         else if ( outputSum < outMin ) { outputSum = outMin; }
 
         // Compute D Output and sum PID Output
-        Output = pTerm + outputSum - kd * dInput;
+        //Output = pTerm + outputSum - kd * dInput;
+        Output = outputSum - kd * dInput;
         //console.log("Output: ", Output);
         if ( Output > outMax ) { Output = outMax; }
         else if ( Output < outMin ) { Output = outMin; }
