@@ -152,7 +152,7 @@ board.on("ready", function() {
 
   // J5 code - this reads the thermometer and stores it in variable temp
   thermo.on("change", function() {
-    temp = this.celsius.toFixed(1);
+    temp = this.celsius.toFixed(2);
 
     // Socket.io code - this emits the temp
     io.sockets.emit('tempChange', temp);
@@ -219,7 +219,7 @@ board.on("ready", function() {
   var SampleTime;
   var outMin, outMax;
   var pTerm = 0;
-  var Kp = 0, Ki = 75, Kd = 7500;
+  var Kp = 7500, Ki = 75, Kd = 0;
   var WindowSize = 10000;
 
 
